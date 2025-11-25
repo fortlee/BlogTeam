@@ -1,6 +1,6 @@
 {
   "name": "blog-team",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "AI-powered blog writing and editing team with multiple personas for brainstorming, writing, editing, promotion, and maintenance",
   "main": "tools/cli/blog-team-cli.js",
   "bin": {
