@@ -78,16 +78,16 @@ your-blog-repo/
 ├── .blog-team/              # Blog Team installation
 │   ├── _cfg/                # Configuration (preserved on updates)
 │   ├── core/                # Core agents and tools
-│   └── writing/             # Writing module with agents
+│   ├── writing/             # Writing module with agents
+│   └── promotion/           # Promotion module with agents
 ├── .claude/commands/        # Claude Code commands
 │   └── blog-team/
 │       ├── brainstorm.md    # Launch brainstorm agent
 │       └── master.md        # Launch coordinator
-├── blog-posts/              # Your blog content
-│   ├── drafts/              # Initial brainstorms
-│   ├── in-progress/         # Active writing
-│   ├── ready-to-publish/    # Completed posts
-│   └── published/           # Archive
+├── blog-posts/              # Your blog content (flat structure)
+│   ├── {post-slug}/         # Standalone posts
+│   └── {series-slug}/       # Multi-part series
+├── ideas.md                 # Quick idea capture
 └── README.md                # Auto-updated progress tracker
 ```
 
@@ -193,9 +193,9 @@ The root `README.md` is automatically updated with a progress table:
 
 | Title | Status | Started | Last Updated | Series | Link |
 |-------|--------|---------|--------------|--------|------|
-| Understanding TypeScript Generics | Draft - Brainstorm | 2025-11-10 | 2025-11-10 | Standalone | [📝](./blog-posts/drafts/a3f9c2d8/) |
-| React Patterns - Part 1 | In Progress - Writing | 2025-11-09 | 2025-11-10 | React Best Practices (Part 1) | [📝](./blog-posts/drafts/b7e4f1a9/c8d2e5f3/) |
-| React Patterns - Part 2 | Draft - Brainstorm | 2025-11-10 | 2025-11-10 | React Best Practices (Part 2) | [📝](./blog-posts/drafts/b7e4f1a9/d9e3f6a4/) |
+| Understanding TypeScript Generics | Draft - Brainstorm | 2025-11-10 | 2025-11-10 | Standalone | [📝](./blog-posts/typescript-generics/) |
+| React Patterns - Part 1 | In Progress - Writing | 2025-11-09 | 2025-11-10 | React Best Practices (Part 1) | [📝](./blog-posts/react-patterns/part-01/) |
+| React Patterns - Part 2 | Draft - Brainstorm | 2025-11-10 | 2025-11-10 | React Best Practices (Part 2) | [📝](./blog-posts/react-patterns/part-02/) |
 
 Click the 📝 link to navigate directly to the post directory in GitHub/GitLab.
 
@@ -374,18 +374,19 @@ Convert API Design post into 3-part series
 Each blog post directory contains:
 
 ```
-blog-posts/drafts/my-post-title/
+blog-posts/my-post-title/
 ├── brainstorm.md       # Initial ideas and structure
 ├── outline.md          # Detailed outline (created by writer agent)
 ├── draft.md            # First draft
 ├── draft-v2.md         # Revisions
 ├── references.md       # Citations and sources
+├── history.md          # Lifecycle tracking (status changes)
 └── final.md            # Ready to publish
 ```
 
 For series:
 ```
-blog-posts/drafts/my-series/
+blog-posts/my-series/
 ├── part-01-introduction/
 │   ├── brainstorm.md
 │   └── ...
@@ -428,23 +429,33 @@ Edit `.blog-team/_cfg/config.yaml` to change:
 blog-team/
 ├── src/                    # Source files (will be installed)
 │   ├── core/               # Core module
-│   │   ├── agents/         # Core agents
+│   │   ├── agents/         # Core agents (master/coordinator)
 │   │   └── config.yaml
-│   └── writing/            # Writing module
-│       ├── agents/         # Writing agents (brainstorm, etc.)
-│       ├── workflows/      # Workflow definitions
-│       └── config.yaml
+│   ├── writing/            # Writing module
+│   │   ├── agents/         # Writing agents (brainstorm, writer, editor, etc.)
+│   │   ├── workflows/      # Workflow definitions
+│   │   └── config.yaml
+│   ├── promotion/          # Promotion module
+│   │   ├── agents/         # Promotion agents (promoter, maintainer)
+│   │   └── workflows/      # Promotion workflows
+│   └── templates/          # Template files (ideas.md)
 ├── tools/                  # Installation tools
 │   ├── cli/                # CLI framework
 │   │   ├── commands/       # CLI commands
 │   │   └── installers/     # Installation logic
 │   └── blog-team-npx-wrapper.js
+├── voices/                 # Voice system templates
+│   ├── common-voice.md     # Universal writing rules
+│   └── voices-index.md     # Voice registry
 └── package.json            # NPM package definition
 ```
 
 ### Building New Agents
 
-1. Create agent YAML in `src/writing/agents/`
+1. Create agent YAML in the appropriate module:
+   - `src/core/agents/` - Core/coordinator agents
+   - `src/writing/agents/` - Content creation agents
+   - `src/promotion/agents/` - Promotion and maintenance agents
 2. Define persona, menu items, and workflows
 3. Run `npx blog-team install` to test
 4. Agent will be compiled to markdown with XML structure
@@ -509,7 +520,7 @@ blog-team install
 
 ### 🚀 Published on NPM
 
-- [x] Published as `blog-team@1.0.0`
+- [x] Published as `blog-team@1.2.0`
 - [x] Available via `npx blog-team install`
 - [x] MIT License
 - [x] Complete documentation

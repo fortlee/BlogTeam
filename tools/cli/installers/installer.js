@@ -164,6 +164,17 @@ class Installer {
         });
       }
 
+      // Copy promotion module
+      const promotionSource = path.join(this.sourceDir, 'promotion');
+      const promotionTarget = path.join(baseDir, 'promotion');
+
+      if (fs.existsSync(promotionSource)) {
+        await fs.copy(promotionSource, promotionTarget, {
+          overwrite: true,
+          filter: (src) => !src.includes('_cfg')
+        });
+      }
+
       // Process config files with variable replacement
       await this.processConfigFiles(baseDir);
 
@@ -479,7 +490,7 @@ Follow all activation instructions in that file exactly.
           blogTeamDir: this.blogTeamDir
         },
         config: this.config,
-        modules: ['core', 'writing'],
+        modules: ['core', 'writing', 'promotion'],
         ides: ['claude-code']
       };
 
