@@ -1,0 +1,346 @@
+workflow:
+  metadata:
+    id: "find-reddit-opportunities"
+    name: "Find Reddit Promotion Opportunities"
+    description: "Identify specific Reddit posts and communities for strategic promotion"
+    module: "promotion"
+    author: "promoter-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Blog Post to Promote"
+      description: "Choose which post needs Reddit promotion"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with draft.md or final.md
+        3. Present numbered list with status
+        4. Ask: Which post would you like to promote on Reddit?
+        5. Store selected post path
+      validation:
+        - "Must show available posts"
+        - "User must select valid post"
+
+    - id: "2"
+      name: "Analyze Post Content"
+      description: "Extract topics, keywords, and unique value proposition"
+      instructions: |
+        Read post file and analyze:
+
+        **Content Analysis: [Post Title]**
+
+        **Main Topic:** [Primary subject matter]
+
+        **Key Themes:** [List 3-5 major themes/concepts]
+
+        **Keywords/Terms:** [Important terms, technologies, concepts]
+
+        **Unique Value/Angle:** [What makes this post different/valuable]
+
+        **Target Audience:** [Who would benefit most]
+
+        **Questions Addressed:** [List questions this post answers]
+
+        **Potential Controversies/Discussions:** [Topics likely to spark discussion]
+
+        **Word Count:** [N] words
+        **Depth:** [Beginner/Intermediate/Advanced/Mixed]
+
+        Store analysis for matching.
+      validation:
+        - "Must identify main topics and keywords"
+        - "Must understand unique value proposition"
+
+    - id: "3"
+      name: "Find Relevant Subreddits"
+      description: "Use WebSearch to identify active subreddits"
+      instructions: |
+        Use WebSearch to find subreddits:
+
+        Search queries to try:
+        - "best subreddits for [main topic] discussions 2025"
+        - "[main topic] reddit communities"
+        - "where to discuss [key themes] on reddit"
+
+        Analyze search results and identify subreddits:
+
+        **Relevant Subreddits Identified:**
+
+        For each subreddit found, assess:
+
+        1. **r/[subreddit-name]** - [Subscribers if known]
+           - **Relevance**: [High/Medium/Low] - [Why]
+           - **Activity level**: [Very active/Moderate/Quiet]
+           - **Self-promotion rules**: [Strict/Moderate/Lenient/Unknown]
+           - **Content style**: [Discussion/News/Questions/Mixed]
+           - **Fit for post**: [Score 1-10] - [Reasoning]
+
+        2. **r/[subreddit-name]**
+           [Details]
+
+        [List 5-10 subreddits total]
+
+        **Top 3 Subreddits for This Post:**
+        1. r/[name] - [Why best fit]
+        2. r/[name] - [Why good fit]
+        3. r/[name] - [Why decent fit]
+
+        Store top subreddits for next step.
+      validation:
+        - "Must use WebSearch to find actual subreddits"
+        - "Must assess relevance and rules"
+        - "Must identify top 3 candidates"
+
+    - id: "4"
+      name: "Find Specific Recent Posts"
+      description: "Search for specific discussions to engage with"
+      instructions: |
+        For each top subreddit, use WebSearch to find specific recent posts:
+
+        Search queries:
+        - "site:reddit.com/r/[subreddit] [main topic] [recent time period]"
+        - "[main topic] reddit.com/r/[subreddit]"
+        - "[key question from post] reddit.com/r/[subreddit]"
+
+        Find 3-5 specific posts per subreddit (focus on last 7-30 days):
+
+        **Specific Reddit Opportunities:**
+
+        **r/[subreddit-name]:**
+
+        1. **Post Title:** "[Actual post title]"
+           - **URL**: [Full Reddit URL]
+           - **Posted**: [How long ago - prioritize recent]
+           - **Engagement**: [Upvotes, comments if available]
+           - **Post Summary**: [Brief description of discussion]
+           - **Opportunity**: [Why your post is relevant]
+           - **Contribution Angle**: [How you'd add value without being spammy]
+           - **Relevance Score**: [1-10]
+           - **Recency Score**: [1-10] (10 = very recent)
+
+        2. **Post Title:** "[Title]"
+           [Details]
+
+        ---
+
+        **r/[next-subreddit]:**
+
+        [Repeat format]
+
+        ---
+
+        **Summary:**
+        - Total opportunities found: [N]
+        - High priority (score 8-10): [N]
+        - Medium priority (score 5-7): [N]
+
+        Store opportunities for scoring.
+      validation:
+        - "Must find SPECIFIC posts with URLs"
+        - "Must prioritize recent posts (last 7-30 days)"
+        - "Must explain relevance for each"
+
+    - id: "5"
+      name: "Score and Prioritize Opportunities"
+      description: "Rank opportunities by strategic fit"
+      instructions: |
+        Score each opportunity on multiple factors:
+
+        **Scoring Criteria:**
+        - Relevance (0-4 points): How well post relates to discussion
+        - Recency (0-3 points): How recent the discussion (3 = last 7 days)
+        - Engagement (0-2 points): High activity = more visibility
+        - Rules compliance (0-1 points): Does subreddit allow this?
+
+        **Total possible**: 10 points
+
+        **Ranked Opportunities:**
+
+        **TOP TIER (8-10 points):**
+
+        1. **[Score]/10 - r/[subreddit] - "[Post title]"**
+           - URL: [Link]
+           - Posted: [Time ago]
+           - Why top tier: [Explanation]
+           - Risk level: [Low/Medium/High]
+
+        2. [Next opportunity]
+
+        **GOOD TIER (5-7 points):**
+
+        3. **[Score]/10 - [Details]**
+
+        **BACKUP TIER (3-4 points):**
+
+        [Lower scored opportunities]
+
+        **Recommendation:**
+        Start with top 3 opportunities. Space out engagement (don't hit all at once).
+
+        **90/10 Strategy for Top Opportunities:**
+        - Lead with genuine contribution to discussion
+        - Answer questions posed in thread
+        - Only mention blog post if it adds clear value
+        - Prefer "I wrote about this" over "Check out my blog"
+
+        Store ranked list.
+      validation:
+        - "Must score all opportunities"
+        - "Must provide clear top 3 recommendations"
+        - "Must emphasize value-first approach"
+
+    - id: "6"
+      name: "Draft Reddit Comments"
+      description: "Create platform-appropriate engagement text"
+      instructions: |
+        For top 3 opportunities, draft Reddit comments:
+
+        **Drafted Reddit Comments:**
+
+        ---
+
+        **Opportunity 1: r/[subreddit] - "[Post title]"**
+        **URL**: [Link]
+
+        **Context**: [What the post is asking/discussing]
+
+        **Drafted Comment:**
+        ```
+        [Draft comment following Reddit best practices:
+         - Start with direct value (answer question, share insight)
+         - Use natural, conversational tone
+         - Break into paragraphs for readability
+         - Only mention blog post if highly relevant
+         - Use "I wrote about this" or "I explored this in detail" not "Check out my blog"
+         - Keep under 300 words unless deep technical explanation needed]
+        ```
+
+        **Strategy:**
+        - Approach: [Value-first contribution]
+        - Blog mention: [Natural/Indirect/None - explain choice]
+        - Follow-up potential: [Will monitor for questions]
+
+        **Character count**: [N]
+
+        ---
+
+        **Opportunity 2: [Details]**
+        [Repeat format]
+
+        ---
+
+        **Opportunity 3: [Details]**
+        [Repeat format]
+
+        ---
+
+        **Posting Strategy:**
+
+        1. **Timing**: [Recommended timing for each]
+        2. **Spacing**: Wait [N] days between posts in same subreddit
+        3. **Monitoring**: Check replies daily for first 2-3 days
+        4. **Engagement**: Reply to comments to build credibility
+
+        **Subreddit Rules Checklist:**
+        - ✓/❌ Check r/[subreddit] rules before posting
+        - ✓/❌ Verify account karma/age requirements
+        - ✓/❌ Confirm self-promotion policy
+        - ✓/❌ Review recent mod posts for restrictions
+
+        Ask: Would you like to:
+        A) Revise any comments
+        B) Add more opportunities
+        C) Save to promotion tracking
+        D) Post now (manual - provide URLs)
+        E) Return to menu
+
+        Wait for selection.
+      validation:
+        - "Must draft specific comments for top opportunities"
+        - "Must follow Reddit best practices"
+        - "Must emphasize value-first approach"
+
+    - id: "7"
+      name: "Save to Promotion Tracking"
+      description: "Document opportunities and planned promotions"
+      instructions: |
+        If user selected C or wants to save:
+
+        1. Check if post directory has promotion-tracking.md
+        2. If not, create with template (from promoter agent menu)
+        3. Add opportunities to "Planned Promotions" section:
+
+        ```markdown
+        ### Reddit - r/[subreddit] - [Post title]
+        - **When**: [Planned date/time]
+        - **URL**: [Reddit post URL]
+        - **Score**: [X]/10
+        - **Strategy**: Value-first contribution, [specific angle]
+        - **Drafted comment**: [Link to this workflow output or paste]
+        - **Status**: Planned
+        - **Notes**: [Any special considerations]
+        ```
+
+        4. Commit changes:
+        ```bash
+        git add [post-directory]/promotion-tracking.md
+        git commit -m "Add Reddit promotion opportunities for [post-title]"
+        git push origin $(git branch --show-current)
+        ```
+
+        5. Confirm saved.
+      validation:
+        - "Must save to promotion-tracking.md"
+        - "Must commit to git"
+
+    - id: "8"
+      name: "Provide Action Summary"
+      description: "Clear next steps for user"
+      instructions: |
+        Present final summary:
+
+        **✓ Reddit Opportunities Identified**
+
+        **Post**: [Post Title]
+
+        **Top Opportunities Found**: [N]
+
+        **Priority Actions:**
+
+        1. **[Subreddit]** - "[Post title]"
+           - Action: [Post drafted comment]
+           - URL: [Link]
+           - When: [Recommended timing]
+
+        2. **[Subreddit]** - "[Post title]"
+           - Action: [Post drafted comment]
+           - URL: [Link]
+           - When: [Recommended timing]
+
+        3. **[Subreddit]** - "[Post title]"
+           - Action: [Post drafted comment]
+           - URL: [Link]
+           - When: [Recommended timing]
+
+        **Remember:**
+        - ✓ Check subreddit rules before posting
+        - ✓ Lead with value, not promotion
+        - ✓ Space out posts (don't flood subreddits)
+        - ✓ Monitor and respond to comments
+        - ✓ Track results in promotion-tracking.md
+
+        **Saved to**: [Path to promotion-tracking.md]
+
+        **Next Steps - What would you like to do?**
+
+        A) Find YouTube opportunities for this post
+        B) Create comprehensive promotion plan (all platforms)
+        C) Find more Reddit opportunities
+        D) Draft promotion text for another platform
+        E) Return to Promoter menu
+        F) Return to Master
+
+        Wait for user selection.
+      validation:
+        - "Must provide clear action summary"
+        - "Must include specific URLs and timing"
+        - "Must remind about best practices"

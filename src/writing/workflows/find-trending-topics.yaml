@@ -1,0 +1,230 @@
+workflow:
+  metadata:
+    id: "find-trending-topics"
+    name: "Find Trending Topics"
+    description: "Research trending topics and suggest additions to ideas.md"
+    module: "writing"
+    author: "ideas-manager-agent"
+
+  steps:
+    - id: "1"
+      name: "Define Research Scope"
+      description: "Understand what topics to research"
+      instructions: |
+        Ask user to define scope:
+
+        **What niche/topic area should I research for trending content?**
+
+        [User provides topic/niche]
+
+        Store niche for research.
+
+        Explain: "I'll research trending topics in [niche]. This involves using
+        web search to find current trends, discussions, and popular content."
+      validation:
+        - "User must provide niche/topic"
+
+    - id: "2"
+      name: "Research Google Trends"
+      description: "Find trending search queries"
+      instructions: |
+        Use WebSearch tool to research trending topics:
+
+        1. Search: "[niche] trending topics 2025"
+        2. Search: "popular [niche] discussions Reddit 2025"
+        3. Search: "[niche] questions people are asking"
+
+        From results, identify:
+        - Trending search queries
+        - Popular discussion topics
+        - Common questions being asked
+        - Emerging subtopics
+
+        Extract 10-15 trending topics/questions.
+
+        Store findings.
+      validation:
+        - "Must perform web searches"
+        - "Must extract trending topics"
+
+    - id: "3"
+      name: "Research Reddit/Community Discussions"
+      description: "Find hot topics in relevant communities"
+      instructions: |
+        Use WebSearch to find Reddit discussions:
+
+        1. Search: "[niche] site:reddit.com"
+        2. Search: "r/[relevant-subreddit] popular posts"
+        3. Look for highly upvoted discussions (500+ upvotes)
+
+        Identify:
+        - What topics are getting traction?
+        - What questions keep appearing?
+        - What debates/discussions are active?
+        - What problems are people trying to solve?
+
+        Extract 5-10 popular discussion topics.
+
+        Store findings.
+      validation:
+        - "Must search Reddit discussions"
+        - "Must identify popular topics"
+
+    - id: "4"
+      name: "Cross-Reference with Existing Content"
+      description: "Avoid duplicating existing posts or ideas"
+      instructions: |
+        1. Read README.md to see existing posts
+        2. Read ideas.md to see current ideas
+        3. Compare trending topics against existing content
+
+        For each trending topic found:
+        - Is it already covered in a post?
+        - Is it already in ideas.md?
+        - Is it sufficiently different from existing content?
+
+        Filter out duplicates.
+        Keep only net-new trending ideas.
+
+        Store filtered list.
+      validation:
+        - "Must check against existing content"
+        - "Must filter out duplicates"
+
+    - id: "5"
+      name: "Assess Trend Alignment"
+      description: "Evaluate which trends fit the blog"
+      instructions: |
+        For each trending topic, assess:
+        - Does it align with blog's niche?
+        - Is it genuinely trending or just noise?
+        - Will it still be relevant in 2-4 weeks? (time to write)
+        - Does it offer value to the target audience?
+
+        Score each trend (1-5):
+        - 5: Perfect fit, high value, strong trend
+        - 4: Good fit, solid value
+        - 3: Moderate fit
+        - 2: Weak fit or fleeting trend
+        - 1: Poor fit or fading trend
+
+        Keep only trends scoring 3 or higher.
+
+        Store scored trends.
+      validation:
+        - "Must score each trend"
+        - "Must filter by score"
+
+    - id: "6"
+      name: "Present Findings and Suggest Additions"
+      description: "Show trending topics and offer to add to ideas.md"
+      instructions: |
+        Present findings:
+
+        **🔥 Trending Topics in [Niche]**
+
+        I found [N] trending topics that align with your blog:
+
+        **High Priority Trends (Score 4-5):**
+
+        1. **"[Trending topic/question]"** - Score: 5/5
+           - Why it's trending: [explanation]
+           - Opportunity: [what value you could provide]
+           - Search volume: [High/Medium]
+
+        2. **"[Trending topic/question]"** - Score: 4/5
+           - Why it's trending: [explanation]
+           - Opportunity: [what value you could provide]
+
+        ---
+
+        **Medium Priority Trends (Score 3):**
+
+        3. **"[Trending topic]"** - Score: 3/5
+           - Why it's trending: [explanation]
+
+        ---
+
+        **Research Sources:**
+        - Google Trends
+        - Reddit discussions (r/[subreddit])
+        - Recent popular posts
+
+        **Recommendations:**
+        [Strategic advice on which trends to pursue first]
+
+        **What would you like to do?**
+
+        A) Add all high-priority trends to ideas.md
+        B) Select specific trends to add (I'll ask which ones)
+        C) Add custom trend idea based on these findings
+        D) Skip - just wanted to see what's trending
+        E) Return to menu
+
+        Wait for user selection.
+      validation:
+        - "Must present organized findings"
+        - "Must offer clear options"
+
+    - id: "7"
+      name: "Add Selected Trends to ideas.md"
+      description: "Append selected trends to ideas file"
+      instructions: |
+        Based on user selection:
+
+        **If A (add all):**
+        - Append all high-priority trends to ideas.md
+        - Add after HTML comment, before existing ideas
+        - Format: one idea per block with ---- separator
+
+        **If B (select specific):**
+        - Show numbered list of all trends
+        - Ask: Which trends to add? (comma-separated numbers: 1,3,5)
+        - Append selected trends only
+
+        **If C (custom):**
+        - Ask: What's your custom idea based on these trends?
+        - Append user's custom idea
+
+        **If D (skip):**
+        - Skip to next step
+
+        After adding:
+        1. Write updated ideas.md
+        2. Commit: "Add trending ideas: [count] new ideas from [niche] research"
+        3. Push to origin
+        4. Confirm: "✓ Added [N] trending ideas to ideas.md"
+
+        Show updated total count.
+      validation:
+        - "Must handle all user selection options"
+        - "Must preserve existing ideas"
+        - "Must commit with clear message"
+
+    - id: "8"
+      name: "Offer Next Actions"
+      description: "Suggest what to do with new trending ideas"
+      instructions: |
+        If ideas were added:
+
+        **✓ Trending ideas added!**
+
+        Your ideas.md now has [N] ideas total.
+
+        **Next steps:**
+
+        A) Score all ideas (including new trends)
+        B) Analyze a specific trending idea
+        C) Start brainstorming a trending idea
+        D) Return to ideas menu
+
+        If no ideas were added:
+
+        **Next steps:**
+
+        A) Research different niche
+        B) Return to ideas menu
+
+        Wait for user selection and act accordingly.
+      validation:
+        - "Must offer appropriate next steps"

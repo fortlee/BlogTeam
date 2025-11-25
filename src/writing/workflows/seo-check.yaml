@@ -1,0 +1,386 @@
+workflow:
+  metadata:
+    id: "seo-check"
+    name: "Quick SEO Check"
+    description: "Fast SEO verification without full editorial review"
+    module: "writing"
+    author: "editor-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Draft for SEO Check"
+      description: "Choose which draft needs SEO verification"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with draft files
+        3. Present numbered list
+        4. Ask: Which draft needs SEO check?
+        5. Store selected draft path
+      validation:
+        - "Must show drafts"
+        - "User must select valid draft"
+
+    - id: "2"
+      name: "Extract Primary Keyword"
+      description: "Identify main topic/keyword"
+      instructions: |
+        Read draft and analyze:
+
+        **Keyword Identification:**
+
+        From title and content, the primary keyword appears to be: "[keyword phrase]"
+
+        Ask: Is this correct, or would you like to specify a different primary keyword?
+
+        A) Yes, that's correct
+        B) Specify different keyword: [user provides]
+
+        Store primary keyword for analysis.
+      validation:
+        - "Must identify or get primary keyword"
+
+    - id: "3"
+      name: "Check Header Structure"
+      description: "Verify H2/H3 usage and keyword inclusion"
+      instructions: |
+        Analyze headers:
+
+        **Header Structure Check:**
+
+        **H1 (Title):**
+        - Present: [Yes/No]
+        - Includes keyword: [Yes/No/Partial]
+        - Assessment: [✓ Good / ⚠️ Add keyword / ❌ Missing]
+
+        **H2 Headers:** ([N] found)
+        [List all H2 headers]
+        - Keywords in headers: [N]/[total]
+        - Average words between H2s: [N]
+        - Assessment: [✓ Well-structured / ⚠️ Add more / ⚠️ Too many]
+
+        **H3 Headers:** ([N] found)
+        [List all H3 headers]
+        - Proper nesting: [Yes/No]
+        - Assessment: [✓ Good hierarchy / ⚠️ Improve nesting]
+
+        **Structure Score:** [A/B/C/D]
+
+        **Issues:**
+        [List any structural issues]
+
+        **Recommendations:**
+        1. [Specific recommendation]
+        2. [Specific recommendation]
+
+        Store header analysis.
+      validation:
+        - "Must check all headers"
+        - "Must verify keyword usage"
+
+    - id: "4"
+      name: "Keyword Optimization Check"
+      description: "Analyze keyword usage throughout content"
+      instructions: |
+        Check keyword placement:
+
+        **Keyword Optimization:**
+
+        **Primary Keyword:** "[keyword]"
+
+        **Placement Check:**
+        - ✓/❌ In title
+        - ✓/❌ In first paragraph
+        - ✓/❌ In at least one H2 header
+        - ✓/❌ In URL/path (if applicable)
+        - ✓/❌ Throughout content naturally
+
+        **Keyword Density:**
+        - Word count: [N]
+        - Keyword mentions: [N]
+        - Density: [X]%
+        - Assessment: [✓ Natural (0.5-2%) / ⚠️ Too low / ⚠️ Keyword stuffing]
+
+        **Related Keywords/Synonyms:**
+        [List related terms found in content]
+        - Variety: [Good / Limited]
+
+        **Keyword Score:** [A/B/C/D]
+
+        **Issues:**
+        [List keyword-related issues]
+
+        **Recommendations:**
+        [If density too low:] Add keyword naturally in [locations]
+        [If stuffed:] Reduce keyword usage, use more synonyms
+        [If missing in key areas:] Add to [first paragraph/headers/etc.]
+
+        Store keyword analysis.
+      validation:
+        - "Must calculate density"
+        - "Must check all placement areas"
+
+    - id: "5"
+      name: "Content Length Check"
+      description: "Verify word count meets SEO standards"
+      instructions: |
+        Analyze content length:
+
+        **Content Length Analysis:**
+
+        **Word Count:** [N] words
+
+        **Length Assessment:**
+        [If < 800:] ❌ **TOO SHORT** - SEO best practice: 1500+ words
+        [If 800-1200:] ⚠️ **SHORT** - Could expand for better SEO
+        [If 1500-2500:] ✅ **OPTIMAL** - Good length for SEO
+        [If 2500-4000:] ✅ **IN-DEPTH** - Excellent for comprehensive coverage
+        [If > 4000:] ⚠️ **VERY LONG** - Consider breaking into series
+
+        **Depth Assessment:**
+        - Introduction: [N] words
+        - Body: [N] words
+        - Conclusion: [N] words
+        - Balance: [Well-balanced / Top-heavy / etc.]
+
+        **Recommendation:**
+        [If too short:] Expand these sections: [list]
+        [If good:] Length is appropriate for topic
+        [If too long:] Consider series format
+
+        Store length analysis.
+      validation:
+        - "Must calculate word count"
+        - "Must assess against SEO standards"
+
+    - id: "6"
+      name: "Check Internal Linking for SEO"
+      description: "Verify link strategy"
+      instructions: |
+        Analyze internal links:
+
+        **Internal Linking SEO:**
+
+        **Link Count:** [N]
+        **Target:** 3-4 per 1500 words
+        **Actual Density:** [X] per 1500 words
+
+        **SEO Link Assessment:**
+        - ✓/❌ Links in first 3 paragraphs (signals relevance)
+        - ✓/❌ Descriptive anchor text (no "click here")
+        - ✓/❌ Links to relevant content (topic clusters)
+        - ✓/❌ Links distributed throughout (not clustered)
+        - ✓/❌ Appropriate depth (not all homepage links)
+
+        **Link Quality:**
+        - Descriptive anchors: [N]/[total]
+        - Generic anchors: [N] [List if any]
+        - Relevant targets: [Most/Some/Few]
+
+        **Link Score:** [A/B/C/D]
+
+        **Issues:**
+        [List link-related issues]
+
+        **Recommendations:**
+        [If too few:] Add [N] more internal links to [related posts]
+        [If no early links:] Add link in first 3 paragraphs
+        [If generic anchors:] Improve anchor text for: [list]
+
+        Store link analysis.
+      validation:
+        - "Must check density and placement"
+        - "Must verify anchor text quality"
+
+    - id: "7"
+      name: "Readability for SEO"
+      description: "Check formatting and scannability"
+      instructions: |
+        Check SEO readability factors:
+
+        **SEO Readability:**
+
+        **Paragraph Length:**
+        - Average sentences: [X] per paragraph
+        - Long paragraphs (>5 sentences): [N]
+        - Assessment: [✓ Easy to scan / ⚠️ Break up long ones]
+
+        **Formatting Elements:**
+        - ✓/❌ Bullet points or numbered lists used
+        - ✓/❌ Bold/emphasis for key points
+        - ✓/❌ Short paragraphs (2-4 sentences mostly)
+        - ✓/❌ White space between sections
+
+        **Visual Breaks:**
+        - Headers provide breaks: [Every ~300-500 words? Yes/No]
+        - Lists break up text: [Yes/No/Could use more]
+
+        **Scannability Score:** [A/B/C/D]
+
+        **Issues:**
+        [List readability issues affecting SEO]
+
+        **Recommendations:**
+        [If walls of text:] Break up paragraphs at: [locations]
+        [If no lists:] Add lists for: [content that could be listed]
+        [If no emphasis:] Bold key points in: [sections]
+
+        Store readability analysis.
+      validation:
+        - "Must check formatting elements"
+        - "Must assess scannability"
+
+    - id: "8"
+      name: "Generate SEO Report"
+      description: "Comprehensive SEO scorecard"
+      instructions: |
+        Generate SEO report:
+
+        **📊 SEO Scorecard: [Post Title]**
+
+        **OVERALL SEO SCORE: [X]/100**
+
+        **GRADE: [A/B/C/D/F]**
+
+        ---
+
+        **DETAILED SCORES:**
+
+        1. **Header Structure:** [Score]/20
+           - H1: [✓/⚠️/❌]
+           - H2/H3: [✓/⚠️/❌]
+           - Keywords in headers: [✓/⚠️/❌]
+
+        2. **Keyword Optimization:** [Score]/20
+           - Placement: [✓/⚠️/❌]
+           - Density: [✓/⚠️/❌]
+           - Natural usage: [✓/⚠️/❌]
+
+        3. **Content Length:** [Score]/20
+           - Word count: [✓/⚠️/❌]
+           - Depth: [✓/⚠️/❌]
+
+        4. **Internal Linking:** [Score]/20
+           - Density: [✓/⚠️/❌]
+           - Quality: [✓/⚠️/❌]
+           - Strategy: [✓/⚠️/❌]
+
+        5. **Readability/Format:** [Score]/20
+           - Paragraphs: [✓/⚠️/❌]
+           - Lists/formatting: [✓/⚠️/❌]
+           - Scannability: [✓/⚠️/❌]
+
+        ---
+
+        **✅ STRENGTHS:**
+        [List what's good]
+
+        **⚠️ NEEDS IMPROVEMENT:**
+        [List issues]
+
+        **❌ CRITICAL ISSUES:**
+        [List blocking SEO problems]
+
+        ---
+
+        **PRIORITY FIXES:**
+
+        1. [High priority SEO fix]
+        2. [High priority SEO fix]
+        3. [High priority SEO fix]
+
+        **QUICK WINS:**
+
+        1. [Easy improvement with high impact]
+        2. [Easy improvement with high impact]
+
+        ---
+
+        **ESTIMATED SEO POTENTIAL:**
+
+        [If Grade A:] ✅ **HIGH** - Well-optimized for search engines
+        [If Grade B:] ⚠️ **GOOD** - Minor improvements for better ranking
+        [If Grade C:] ⚠️ **MODERATE** - Several optimizations needed
+        [If Grade D/F:] ❌ **LOW** - Significant SEO work required
+
+        **Next Steps - What would you like to do?**
+
+        A) Fix SEO issues automatically
+        B) Guide me through fixes one by one
+        C) Export SEO report to file
+        D) Work with Writer agent to improve
+        E) Accept as-is and return to menu
+
+        Wait for user selection.
+      validation:
+        - "Must calculate overall score"
+        - "Must provide actionable recommendations"
+        - "Must offer clear next steps"
+
+    - id: "9"
+      name: "Apply SEO Fixes (if selected)"
+      description: "Make SEO improvements"
+      instructions: |
+        If user selected A or B:
+
+        **If A (automatic fixes):**
+        Apply all recommended SEO fixes:
+        - Add keyword to headers where natural
+        - Break up long paragraphs
+        - Add internal links if needed
+        - Add lists/formatting
+        - Improve anchor text
+
+        **If B (guided fixes):**
+        For each SEO issue:
+        - Show issue
+        - Suggest specific fix
+        - Ask for approval
+        - Apply if approved
+
+        Update draft with fixes.
+
+        Count changes made.
+      validation:
+        - "Must apply fixes maintaining natural flow"
+        - "Must not over-optimize (keyword stuffing)"
+
+    - id: "10"
+      name: "Save and Report Results"
+      description: "Commit changes and summarize"
+      instructions: |
+        1. Save updated draft
+        2. Commit changes:
+           ```bash
+           git add [draft-path]
+           git commit -m "SEO optimization for [post-title]: [changes made]"
+           git push origin $(git branch --show-current)
+           ```
+
+        3. Present final summary:
+
+        **✓ SEO Check Complete**
+
+        **Final SEO Score:** [X]/100 (Grade: [A/B/C/D])
+
+        [If fixes were applied:]
+        **Changes Made:** [N]
+        - [Summary of SEO improvements]
+
+        **Before → After:**
+        - SEO Score: [old] → [new]
+        - Grade: [old] → [new]
+
+        **Remaining Opportunities:**
+        [If any recommended improvements not made]
+
+        **Next Steps:**
+
+        A) Run full editorial review
+        B) Continue with Writer agent
+        C) Return to Editor menu
+        D) Return to Master
+
+        Wait for user selection.
+      validation:
+        - "Must save changes if any made"
+        - "Must provide before/after comparison"

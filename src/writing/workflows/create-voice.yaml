@@ -1,0 +1,529 @@
+workflow:
+  metadata:
+    id: "create-voice"
+    name: "Create Writing Voice"
+    description: "Guide user through defining a new writing voice/persona"
+    module: "writing"
+    author: "voice-narrator-agent"
+
+  steps:
+    - id: "0"
+      name: "Introduction and Context"
+      description: "Explain voice system and check existing voices"
+      instructions: |
+        1. Read voices/voices-index.md to see existing voices
+        2. Present introduction:
+
+        **Creating a New Writing Voice**
+
+        A writing voice helps maintain consistency and authenticity in your content. Think of it
+        as a persona - different voices for different audiences or content types.
+
+        **Your existing voices:**
+        [If voices exist, list them with brief description]
+        [If no voices exist: "No voices defined yet. This will be your first!"]
+
+        **Common Voice (applies to all):**
+        [Summary of common voice rules if they exist]
+
+        Creating a voice involves defining:
+        - Target audience and their needs
+        - Personality traits and tone
+        - Do's and don'ts
+        - Words/phrases to use or avoid
+        - Authors or brands to emulate
+
+        Ready to define a new voice?
+
+      validation:
+        - "Must read voices-index.md"
+        - "Must present existing voices if any"
+
+    - id: "1"
+      name: "Voice Name and Description"
+      description: "Name the voice and describe its purpose"
+      instructions: |
+        Ask the user:
+
+        **What should we call this voice?**
+
+        Give it a memorable name that reflects its purpose.
+
+        Examples:
+        - "Professional Tech Blog" - For technical tutorials
+        - "Casual Lifestyle" - For personal lifestyle content
+        - "Academic Authority" - For research-based posts
+        - "Friendly Teacher" - For educational content
+
+        [Wait for name]
+
+        **What's the purpose of this voice? When will you use it?**
+
+        In 1-2 sentences, describe when and why you'd use this voice.
+
+        Store the name and description for later use.
+      validation:
+        - "Voice name must be provided"
+        - "Description must be clear"
+
+    - id: "2"
+      name: "Target Audience Definition"
+      description: "Define who this voice speaks to"
+      instructions: |
+        Ask:
+
+        **Who is your target audience for this voice?**
+
+        Be as specific as possible. The more you know your audience, the easier writing becomes.
+
+        Consider:
+        - Demographics (age, profession, experience level)
+        - Their goals and pain points
+        - What they already know vs. what they need to learn
+        - How they like to consume content
+
+        **Quick profile:**
+
+        A) Beginners - New to the topic, need clear explanations
+        B) Intermediate - Some experience, want to go deeper
+        C) Experts - Deep knowledge, interested in cutting-edge ideas
+        D) General public - Varied backgrounds, need accessible language
+        E) Specific profession (specify)
+        F) Other (describe)
+
+        [Wait for selection]
+
+        **What does your audience care about most?**
+
+        A) Solving practical problems
+        B) Understanding theory/concepts
+        C) Staying current with trends
+        D) Step-by-step how-tos
+        E) Thought-provoking analysis
+        F) Entertainment and engagement
+        G) Other (specify)
+
+        **What's their reading context?**
+
+        A) Quick scanning (busy professionals)
+        B) Deep reading (dedicated learners)
+        C) Mobile browsing (on-the-go)
+        D) Research mode (citation-heavy)
+        E) Mixed/varies
+
+        Compile these into a clear audience profile.
+      validation:
+        - "Target audience must be clearly defined"
+        - "Audience goals must be identified"
+        - "Reading context must be specified"
+
+    - id: "3"
+      name: "Personality and Tone"
+      description: "Define the voice's personality traits"
+      instructions: |
+        **What personality should this voice have?**
+
+        Think about how you want to come across to your audience.
+
+        **Select 3-5 core personality traits** (or define your own):
+
+        A) Professional - Credible, polished, authoritative
+        B) Friendly - Warm, approachable, conversational
+        C) Playful - Witty, humorous, entertaining
+        D) Direct - Blunt, no-nonsense, efficient
+        E) Empathetic - Understanding, supportive, encouraging
+        F) Analytical - Logical, data-driven, systematic
+        G) Creative - Imaginative, unexpected, artistic
+        H) Educational - Teaching-focused, patient, clear
+        I) Inspirational - Motivating, uplifting, aspirational
+        J) Other (specify)
+
+        [Collect 3-5 traits]
+
+        **If this voice were a person, how would they speak?**
+
+        - **Formality level:**
+          A) Very formal (academic, corporate)
+          B) Professional but approachable
+          C) Casual and conversational
+          D) Very casual (like texting a friend)
+
+        - **Sentence structure:**
+          A) Short and punchy
+          B) Varied (mix of short and long)
+          C) Complex and detailed
+
+        - **Use of humor:**
+          A) Serious, no humor
+          B) Occasional light humor
+          C) Frequently humorous
+          D) Humor is central
+
+        Compile into personality profile.
+      validation:
+        - "Must select 3-5 personality traits"
+        - "Formality level must be specified"
+        - "Sentence structure preference must be defined"
+        - "Humor level must be specified"
+
+    - id: "4"
+      name: "Do's and Don'ts"
+      description: "Define specific guidelines for this voice"
+      instructions: |
+        **What should this voice ALWAYS do?**
+
+        Think about your non-negotiable practices.
+
+        Examples:
+        - Always provide code examples for technical concepts
+        - Always include practical takeaways
+        - Always cite sources for claims
+        - Always use inclusive language
+        - Always break down complex ideas into steps
+
+        List 3-7 "always do" items.
+
+        ---
+
+        **What should this voice NEVER do?**
+
+        Think about your absolute no-goes.
+
+        Examples:
+        - Never use jargon without explanation
+        - Never assume prior knowledge
+        - Never use passive voice
+        - Never write paragraphs longer than 4 sentences
+        - Never skip examples
+
+        List 3-7 "never do" items.
+
+        Store as Do's and Don'ts.
+      validation:
+        - "Must have at least 3 Do's"
+        - "Must have at least 3 Don'ts"
+        - "Items must be specific and actionable"
+
+    - id: "5"
+      name: "Vocabulary and Phrasing"
+      description: "Define words/phrases to use or avoid"
+      instructions: |
+        **Words and Phrases to USE (embrace these):**
+
+        Are there specific words, phrases, or terminology that fit this voice?
+
+        Examples:
+        - Technical voice might use: "implement," "optimize," "architecture"
+        - Friendly voice might use: "let's explore," "here's the thing," "you'll love this"
+        - Academic voice might use: "evidence suggests," "research indicates," "framework"
+
+        List words/phrases to embrace (or skip if none specific).
+
+        ---
+
+        **Words and Phrases to AVOID (specific to this voice):**
+
+        Are there words or phrases that don't fit this voice?
+
+        Examples:
+        - Avoid business jargon: "synergy," "leverage," "circle back"
+        - Avoid filler words: "basically," "actually," "literally"
+        - Avoid overly casual: "gonna," "wanna," "kinda"
+        - Avoid clichés: "think outside the box," "game changer"
+
+        List words/phrases to avoid for this voice specifically.
+
+        Note: Common avoidances across ALL voices go in common-voice.md, not here.
+
+      validation:
+        - "Should identify voice-specific vocabulary preferences"
+        - "Should distinguish from common voice rules"
+
+    - id: "6"
+      name: "Authors and Brands to Emulate"
+      description: "Identify voices to model"
+      instructions: |
+        **Are there authors, writers, or brands whose voice you admire and want to emulate?**
+
+        This helps anchor your voice to real examples.
+
+        Examples:
+        - "Write like Seth Godin - short, punchy, provocative"
+        - "Emulate Stripe's documentation - clear, comprehensive, friendly"
+        - "Channel Richard Dawkins - precise, evidence-based, analytical"
+        - "Match The New Yorker's style - literary, detailed, sophisticated"
+
+        List 1-5 authors/brands with brief notes on what to emulate.
+
+        [If user has no specific examples, that's okay - skip this]
+
+      validation:
+        - "Optional but encouraged"
+        - "If provided, must explain what to emulate"
+
+    - id: "7"
+      name: "Examples and Context"
+      description: "Provide concrete examples of this voice"
+      instructions: |
+        **Let's create a concrete example of this voice in action.**
+
+        I'll give you a neutral sentence, and you rewrite it in your new voice:
+
+        **Neutral version:**
+        "In this post, we will discuss the benefits of test-driven development
+        and how to implement it in your workflow."
+
+        **How would your voice say this?**
+
+        [Wait for user's example]
+
+        ---
+
+        **Another example - a conclusion paragraph:**
+
+        **Neutral version:**
+        "We have covered the main concepts. These techniques should help you
+        improve your code quality."
+
+        **How would your voice conclude?**
+
+        [Wait for user's example]
+
+        These examples will be stored in your voice file as reference points.
+
+      validation:
+        - "Should provide at least one example"
+        - "Examples should demonstrate voice characteristics"
+
+    - id: "8"
+      name: "Review Voice Definition"
+      description: "Present complete voice for confirmation"
+      instructions: |
+        **Review Your New Voice: [Voice Name]**
+
+        **Purpose:** [Description from step 1]
+
+        **Target Audience:**
+        - Profile: [Audience definition]
+        - Goals: [What they care about]
+        - Context: [Reading context]
+
+        **Personality Traits:**
+        [List of 3-5 traits]
+
+        **Tone Characteristics:**
+        - Formality: [Level]
+        - Sentence structure: [Style]
+        - Humor: [Level]
+
+        **Do's:**
+        [List from step 4]
+
+        **Don'ts:**
+        [List from step 4]
+
+        **Vocabulary:**
+        - Embrace: [Words/phrases to use]
+        - Avoid: [Words/phrases to avoid]
+
+        **Emulate:**
+        [Authors/brands if provided]
+
+        **Examples:**
+        [Examples from step 7]
+
+        ---
+
+        **Does this capture your voice?**
+
+        A) Yes, create this voice
+        B) Revise a specific section (which one?)
+        C) Start over
+        D) Cancel
+
+      validation:
+        - "Must present complete voice definition"
+        - "User must confirm or request changes"
+
+    - id: "9"
+      name: "Create Voice File"
+      description: "Save the voice to voices/ directory"
+      instructions: |
+        1. Create a filename from the voice name:
+           - Convert to lowercase
+           - Replace spaces with hyphens
+           - Remove special characters
+           - Example: "Professional Tech Blog" → "professional-tech-blog.md"
+
+        2. Create the file: voices/[filename].md
+
+        3. Write the voice definition in this format:
+
+        ```markdown
+        # [Voice Name]
+
+        **Created:** [Date]
+        **Last Updated:** [Date]
+
+        ## Purpose
+
+        [Description from step 1]
+
+        ## Target Audience
+
+        **Profile:** [Audience definition]
+
+        **Goals:** [What they care about]
+
+        **Reading Context:** [How they consume content]
+
+        ## Personality and Tone
+
+        **Core Traits:**
+        - [Trait 1]
+        - [Trait 2]
+        - [Trait 3]
+        [... up to 5 traits]
+
+        **Tone Characteristics:**
+        - **Formality:** [Level]
+        - **Sentence Structure:** [Style]
+        - **Humor:** [Level]
+
+        ## Guidelines
+
+        ### Always Do (Do's)
+
+        - [Do 1]
+        - [Do 2]
+        - [Do 3]
+        [... continue]
+
+        ### Never Do (Don'ts)
+
+        - [Don't 1]
+        - [Don't 2]
+        - [Don't 3]
+        [... continue]
+
+        ## Vocabulary
+
+        ### Words/Phrases to Embrace
+
+        [List or "No specific preferences"]
+
+        ### Words/Phrases to Avoid
+
+        [List or "See common-voice.md for global avoidances"]
+
+        ## Emulate
+
+        [List of authors/brands with notes, or "No specific models"]
+
+        ## Examples
+
+        ### Example 1: Introduction
+        > [User's example from step 7]
+
+        ### Example 2: Conclusion
+        > [User's example from step 7]
+
+        ## Notes
+
+        [Any additional thoughts or context]
+
+        ---
+
+        **Usage:** This voice has been used in [0] posts.
+        ```
+
+        4. Use Write tool to create the voice file
+        5. Read it back to verify
+
+      validation:
+        - "Voice file must be created successfully"
+        - "File must contain all sections"
+        - "Filename must be valid and descriptive"
+
+    - id: "10"
+      name: "Update Voices Index"
+      description: "Add new voice to voices-index.md"
+      instructions: |
+        1. Read voices/voices-index.md
+
+        2. Add a new entry for this voice:
+
+        ```markdown
+        ### [Voice Name]
+
+        **File:** `[filename].md`
+        **Created:** [Date]
+        **Purpose:** [Brief description]
+        **Target Audience:** [Brief audience description]
+        **Used in:** 0 posts
+        ```
+
+        3. Update the voice count at the top of voices-index.md
+
+        4. Use Edit tool to update voices-index.md
+
+      validation:
+        - "voices-index.md must be updated"
+        - "New voice must be listed"
+        - "Voice count must be accurate"
+
+    - id: "11"
+      name: "Git Commit Changes"
+      description: "Commit the new voice to git"
+      instructions: |
+        Execute git commands using Bash tool:
+
+        1. Stage the files:
+           ```bash
+           git add voices/[filename].md voices/voices-index.md
+           ```
+
+        2. Commit:
+           ```bash
+           git commit -m "Add new voice: [Voice Name]"
+           ```
+
+        3. Push:
+           ```bash
+           git push origin $(git branch --show-current)
+           ```
+
+        If push fails (no remote), that's okay.
+
+      validation:
+        - "Files must be staged and committed"
+        - "Push should be attempted"
+
+    - id: "12"
+      name: "Summarize and Next Steps"
+      description: "Confirm creation and offer guidance"
+      instructions: |
+        **✓ Voice Created: [Voice Name]**
+
+        Your new writing voice has been saved and is ready to use.
+
+        **Location:** voices/[filename].md
+
+        **Next Steps:**
+
+        A) Create another voice
+        B) Edit this voice (refine it)
+        C) View all voices
+        D) Update common voice (rules for all voices)
+        E) Start writing with this voice (switch to Brainstorm/Writer agent)
+        F) Return to menu
+
+        **Tip:** When you start your next blog post, you'll be asked which voice to use.
+        Your agents (Writer and Editor) will automatically apply this voice's guidelines
+        to keep your content consistent with your chosen persona.
+
+        What would you like to do?
+
+      validation:
+        - "Must present clear summary"
+        - "Must offer actionable next steps"

@@ -1,0 +1,270 @@
+workflow:
+  metadata:
+    id: "research-sources"
+    name: "Research Sources for Brainstorm"
+    description: "Find credible citations for claims in a brainstorm.md"
+    module: "writing"
+    author: "researcher-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Post to Research"
+      description: "Choose which post needs source research"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to show only posts with brainstorm.md files
+        3. Present numbered list
+        4. Ask: Which post needs source research?
+        5. Store selected post path
+      validation:
+        - "Must show available posts"
+        - "User must select valid post"
+
+    - id: "2"
+      name: "Extract Claims from Brainstorm"
+      description: "Identify all factual claims that need citations"
+      instructions: |
+        1. Read the selected brainstorm.md file
+        2. Analyze content for:
+           - Statistics or data points
+           - Factual claims about how things work
+           - Historical facts
+           - Scientific/technical assertions
+           - Industry trends or standards
+           - Any "according to" or "research shows" statements
+
+        3. Extract each claim that needs a source
+
+        4. Present to user:
+
+        **Claims Needing Sources:**
+
+        I found [N] claims that should be backed by sources:
+
+        1. "[Claim text]"
+           - Type: [Statistic / Fact / Technical / etc.]
+           - Priority: [High / Medium / Low]
+
+        2. "[Claim text]"
+           ...
+
+        Ask: Are there any additional claims I missed that need sources?
+
+        [User can add more or proceed]
+
+        Store all claims.
+      validation:
+        - "Must identify factual claims"
+        - "Must categorize by type"
+        - "Must allow user additions"
+
+    - id: "3"
+      name: "Research Sources for Each Claim"
+      description: "Find credible sources for all claims"
+      instructions: |
+        For each claim, perform research:
+
+        **Research Priority Order:**
+        1. Search: "[claim] site:.gov"
+        2. Search: "[claim] site:.edu"
+        3. Search: "[claim] peer-reviewed study"
+        4. Search: "[claim] [major news outlets]"
+        5. Search: "[claim] industry authority"
+
+        For each claim, find 1-3 credible sources.
+
+        Rate each source:
+        - **High credibility**: .gov, .edu, peer-reviewed journals
+        - **Medium credibility**: Major news, industry authorities
+        - **Low credibility**: Blogs, unknown sources
+
+        Store sources with credibility ratings.
+      validation:
+        - "Must search multiple source types"
+        - "Must rate source credibility"
+        - "Must find at least 1 source per claim"
+
+    - id: "4"
+      name: "Present Research Findings"
+      description: "Show all sources found for review"
+      instructions: |
+        Present findings organized by claim:
+
+        **Research Results for: [Post Title]**
+
+        ---
+
+        **Claim 1:** "[Claim text]"
+
+        **Sources Found:**
+
+        1. ✅ **[Source Title]** - Credibility: HIGH
+           - Type: Government report
+           - URL: [link]
+           - Citation: [Author] ([Year]). [Title]. [Source]. [URL]
+           - Why credible: Official government data from [agency]
+
+        2. ⚠️ **[Source Title]** - Credibility: MEDIUM
+           - Type: News article
+           - URL: [link]
+           - Citation: [formatted citation]
+           - Why credible: Major news outlet, cites original research
+
+        **Recommendation:** Use source #1 as primary citation
+
+        ---
+
+        **Claim 2:** "[Claim text]"
+
+        **Sources Found:**
+        ...
+
+        ---
+
+        **Summary:**
+        - Total claims: [N]
+        - Sources found: [N]
+        - High credibility: [N]
+        - Medium credibility: [N]
+        - Claims without sources: [N]
+
+        **Overall Assessment:**
+        [Good - all claims have high-quality sources / Needs work - some claims lack sources]
+
+        Ask: What would you like to do?
+
+        A) Create references.md with all these sources
+        B) Research specific claims more deeply
+        C) Edit brainstorm to remove unsourced claims
+        D) Continue to next step
+
+        Wait for user selection.
+      validation:
+        - "Must show all claims and sources"
+        - "Must provide credibility ratings"
+        - "Must offer clear options"
+
+    - id: "5"
+      name: "Create references.md File"
+      description: "Generate reference documentation"
+      instructions: |
+        Create references.md in the post directory with:
+
+        ```markdown
+        # References for [Post Title]
+
+        All sources and citations for this blog post.
+
+        ## Detailed Citations
+
+        ### Claim: "[Claim 1 text]"
+
+        **Primary Source:**
+        - Author: [Author name]
+        - Year: [Year]
+        - Title: [Title]
+        - Source: [Publication/Organization]
+        - URL: [URL]
+        - Credibility: HIGH - [Reasoning]
+        - Used for: [What this supports]
+
+        **In-text citation format:**
+        According to [Author/Organization] ([Year]), [paraphrase]. ([source link])
+
+        ### Claim: "[Claim 2 text]"
+
+        **Primary Source:**
+        ...
+
+        ---
+
+        ## Reference List (for blog post end)
+
+        Copy this formatted list to the end of your blog post:
+
+        1. [Author]. ([Year]). [Title]. [Source]. [URL]
+        2. [Author]. ([Year]). [Title]. [Source]. [URL]
+        3. ...
+
+        ---
+
+        ## Source Quality Summary
+
+        - High credibility sources: [N]
+        - Medium credibility sources: [N]
+        - Low credibility sources: [N]
+
+        **Assessment:** [Overall quality assessment]
+
+        **Notes:**
+        [Any additional notes about sources or gaps]
+        ```
+
+        Save references.md to post directory.
+
+        Update history.md in post directory:
+        - Add entry: | [now] | **Added research** - Found [N] sources for [N] claims | [pending] |
+
+        Commit: "Add research sources for [post-title]"
+        Push to origin.
+
+        Confirm creation.
+      validation:
+        - "Must create well-formatted references.md"
+        - "Must include all source details"
+        - "Must provide in-text citation examples"
+
+    - id: "6"
+      name: "Update Brainstorm with Citation Markers"
+      description: "Mark where citations should go in brainstorm"
+      instructions: |
+        Ask: Would you like me to update brainstorm.md with citation markers?
+
+        If yes:
+        1. Read brainstorm.md
+        2. For each claim, add marker: [CITE: source-1] or [CITE: author-year]
+        3. Example:
+           - Before: "TypeScript is the fastest growing language"
+           - After: "TypeScript is the fastest growing language [CITE: github-octoverse-2024]"
+
+        4. Add note at top of brainstorm.md:
+           > **Citations:** See references.md for all sources
+
+        5. Write updated brainstorm.md
+        6. Commit: "Add citation markers to brainstorm for [post-title]"
+        7. Push to origin
+
+        Confirm update.
+      validation:
+        - "Must add markers for all claims"
+        - "Must preserve brainstorm content"
+
+    - id: "7"
+      name: "Provide Next Steps"
+      description: "Guide user on what to do next"
+      instructions: |
+        Present summary and next steps:
+
+        **✓ Research Complete**
+
+        **Created:**
+        - references.md with [N] sources
+        - [If applicable] Updated brainstorm.md with citation markers
+
+        **Source Quality:**
+        - High credibility: [N] sources
+        - Medium credibility: [N] sources
+
+        **Next Steps:**
+
+        A) Continue to Writer agent (start drafting with sources)
+        B) Research additional claims
+        C) Return to Brainstorm agent to refine
+        D) Return to Master
+
+        What would you like to do?
+
+        Wait for user selection.
+      validation:
+        - "Must summarize what was done"
+        - "Must offer logical next steps"

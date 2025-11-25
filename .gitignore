@@ -1,0 +1,9 @@
+node_modules/
+BMAD-METHOD/
+*.log
+.DS_Store
+.env
+
+# Blog Team test installations (if testing locally)
+.blog-team-test/
+blog-posts-test/

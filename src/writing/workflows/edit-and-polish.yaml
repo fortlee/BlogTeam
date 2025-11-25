@@ -1,0 +1,433 @@
+workflow:
+  metadata:
+    id: "edit-and-polish"
+    name: "Edit and Polish Draft"
+    description: "Comprehensive editorial review with SEO optimization"
+    module: "writing"
+    author: "editor-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Draft to Edit"
+      description: "Choose which draft needs editorial review"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with draft files
+        3. Present numbered list
+        4. Ask: Which draft needs editorial review?
+        5. Store selected draft path
+      validation:
+        - "Must show drafts"
+        - "User must select valid draft"
+
+    - id: "2"
+      name: "Initial Quality Assessment"
+      description: "Quick scan to identify major issues"
+      instructions: |
+        Read draft and perform initial assessment:
+
+        **Initial Assessment: [Post Title]**
+
+        **Basic Metrics:**
+        - Word count: [N]
+        - Sections/headers: [N]
+        - Internal links: [N]
+        - Citations: [N]
+
+        **Quick Scan Results:**
+        - Structure: [Good / Needs improvement]
+        - Readability: [Clear / Some issues]
+        - Completeness: [Complete / Missing sections]
+
+        **Priority Areas to Review:**
+        [List 3-5 areas that need attention]
+
+        Proceeding with detailed review...
+      validation:
+        - "Must provide initial assessment"
+
+    - id: "3"
+      name: "Citation Verification"
+      description: "Ensure all claims are properly sourced"
+      instructions: |
+        1. Identify all factual claims in draft
+        2. Check if each has a citation
+        3. Read references.md if exists
+        4. Verify citation quality
+
+        **Citation Review:**
+
+        **Claims Analysis:**
+        - Total factual claims: [N]
+        - Properly cited: [N] ([%])
+        - Missing citations: [N]
+        - Citation quality: [High/Medium/Low]
+
+        [If 100% cited:]
+        ✅ **PASS** - All claims properly sourced
+
+        [If 80-99% cited:]
+        ⚠️ **NEEDS ATTENTION** - [N] claims need sources:
+        1. "[claim]" - [location]
+        2. "[claim]" - [location]
+
+        [If < 80%:]
+        ❌ **INSUFFICIENT** - Too many unsourced claims
+
+        **Citation Quality Issues:**
+        [If any low-quality sources, list them]
+
+        **Recommendation:**
+        [If issues:] Must work with Researcher agent before publishing
+        [If good:] Citations meet quality standards
+
+        Store citation status.
+      validation:
+        - "Must verify all factual claims"
+        - "Must provide clear pass/fail assessment"
+
+    - id: "4"
+      name: "Internal Link Review"
+      description: "Check link density and quality"
+      instructions: |
+        Analyze internal links:
+
+        **Internal Link Review:**
+
+        **Link Metrics:**
+        - Total links: [N]
+        - Words: [N]
+        - Density: [X] per 1000 words
+        - Target: 2-3 per 1000 words
+
+        **Density Assessment:**
+        [If 2-3 per 1000:] ✅ **OPTIMAL**
+        [If < 2:] ⚠️ **TOO FEW** - Add [N] more links
+        [If > 4:] ⚠️ **TOO MANY** - Consider removing [N]
+
+        **Link Quality:**
+
+        **Good Links:**
+        - [N] links with descriptive anchors
+        - [N] links distributed well
+
+        **Issues:**
+        [If generic anchors:] - [N] generic anchors ("click here", "read more")
+        [If clustered:] - [N] links clustered in one section
+        [If broken:] - [N] broken/invalid links
+
+        **Link Distribution:**
+        - First 3 paragraphs: [N] links [✓ Good / ⚠️ Should add early]
+        - Evenly distributed: [Yes / No - clustered in [sections]]
+
+        **Recommendation:**
+        [If issues:] Work with Writer agent to improve links
+        [If good:] Link quality meets standards
+
+        Store link status.
+      validation:
+        - "Must calculate density"
+        - "Must identify quality issues"
+
+    - id: "5"
+      name: "SEO Element Check"
+      description: "Verify SEO best practices"
+      instructions: |
+        Check SEO elements:
+
+        **SEO Review:**
+
+        **Headers:**
+        - H1 (title): [Present / Missing]
+        - H2 headers: [N] - [✓ Good / ⚠️ Add more / ⚠️ Too many]
+        - H3 headers: [N]
+        - Header keywords: [Do headers include main keywords?]
+
+        **Structure:**
+        - Words between headers: Avg [N] [✓ 250-500 optimal / ⚠️ Too long]
+        - Logical hierarchy: [Yes / No]
+        - Clear sections: [Yes / Needs improvement]
+
+        **Keywords:** (Identify from content)
+        - Primary keyword: [Inferred keyword]
+        - Used in: [Title / Headers / First paragraph / Throughout]
+        - Keyword density: [Natural / Overstuffed / Underused]
+
+        **Content Quality:**
+        - Unique value: [Does it offer unique insights?]
+        - Depth: [Superficial / Adequate / In-depth]
+        - Completeness: [Fully covers topic / Missing aspects]
+
+        **Technical SEO:**
+        - Paragraph length: [Most under 5 sentences? Yes/No]
+        - Lists/bullets: [Used where appropriate? Yes/No]
+        - Bold/emphasis: [Used for key points? Yes/No]
+
+        **SEO Score:** [A/B/C/D]
+
+        **Issues to Fix:**
+        [List specific SEO issues]
+
+        Store SEO status.
+      validation:
+        - "Must check all SEO elements"
+        - "Must provide actionable recommendations"
+
+    - id: "6"
+      name: "Readability Analysis"
+      description: "Assess clarity and flow"
+      instructions: |
+        Analyze readability:
+
+        **Readability Review:**
+
+        **Paragraph Analysis:**
+        - Average sentences per paragraph: [X]
+        - Long paragraphs (>5 sentences): [N] - [List locations if any]
+        - Recommendation: [Break up / Good balance]
+
+        **Sentence Complexity:**
+        - Average words per sentence: [X]
+        - Optimal: 15-20 words
+        - Long sentences (>25 words): [N]
+        - Very long (>35 words): [N]
+        - Recommendation: [Simplify / Good variety]
+
+        **Flow & Transitions:**
+        - Transition words found: [List examples]
+        - Section transitions: [Smooth / Abrupt]
+        - Logical progression: [Clear / Confusing]
+
+        **Clarity Issues:**
+        [If any unclear sentences/paragraphs, list them with locations]
+
+        **Reading Level:** [Estimated grade level or Simple/Medium/Complex]
+
+        **Readability Score:** [A/B/C/D]
+
+        Store readability status.
+      validation:
+        - "Must analyze paragraph/sentence structure"
+        - "Must identify clarity issues"
+
+    - id: "7"
+      name: "Grammar and Style Check"
+      description: "Identify grammar and style issues"
+      instructions: |
+        Check for common issues:
+
+        **Grammar & Style Review:**
+
+        **Grammar Issues:**
+        - Passive voice: [N] instances [List if excessive]
+        - Tense inconsistencies: [None / List locations]
+        - Agreement errors: [None / List if found]
+        - Punctuation issues: [None / List if found]
+
+        **Style Issues:**
+        - Repetitive words: [List words used too frequently]
+        - Clichés: [List if found]
+        - Jargon without explanation: [List if found]
+        - Tone consistency: [Consistent / Varies - note where]
+
+        **Voice:**
+        - Person: [1st / 2nd / 3rd / Mixed]
+        - Consistency: [Consistent / Shifts noted at [locations]]
+
+        **Word Choice:**
+        - Vague words ("things", "stuff"): [Count if excessive]
+        - Filler words ("very", "really"): [Count if excessive]
+
+        **Issues Found:** [Total count]
+
+        [If issues > 10:] ⚠️ Significant editing needed
+        [If issues 5-10:] ⚠️ Moderate editing needed
+        [If issues < 5:] ✓ Minor touch-ups needed
+        [If issues 0:] ✅ Excellent quality
+
+        Store grammar status.
+      validation:
+        - "Must identify specific issues"
+        - "Must provide locations"
+
+    - id: "8"
+      name: "Comprehensive Quality Report"
+      description: "Summarize all findings"
+      instructions: |
+        Generate comprehensive report:
+
+        **📋 Editorial Review Report: [Post Title]**
+
+        **OVERALL GRADE: [A/B/C/D/F]**
+
+        ---
+
+        **✅ PASSED CHECKS:**
+        [List areas that passed]
+
+        **⚠️ NEEDS IMPROVEMENT:**
+        [List areas needing work]
+
+        **❌ BLOCKING ISSUES:**
+        [List critical issues that prevent publishing]
+
+        ---
+
+        **DETAILED SCORES:**
+
+        1. **Citations:** [Score] - [Status]
+           - [Brief summary]
+
+        2. **Internal Links:** [Score] - [Status]
+           - [Brief summary]
+
+        3. **SEO:** [Score] - [Status]
+           - [Brief summary]
+
+        4. **Readability:** [Score] - [Status]
+           - [Brief summary]
+
+        5. **Grammar & Style:** [Score] - [Status]
+           - [Brief summary]
+
+        ---
+
+        **PRIORITY FIXES:** (Must address before publishing)
+
+        1. [High priority issue with location]
+        2. [High priority issue with location]
+        3. ...
+
+        **RECOMMENDED IMPROVEMENTS:** (Nice to have)
+
+        1. [Medium priority suggestion]
+        2. [Medium priority suggestion]
+        3. ...
+
+        ---
+
+        **PUBLISHING READINESS:**
+
+        [If Grade A/B and no blocking issues:]
+        ✅ **READY TO PUBLISH**
+        This post meets quality standards and can move to ready-to-publish status.
+
+        [If Grade C/D or blocking issues:]
+        ⚠️ **NOT READY**
+        Address [N] blocking issues before publishing.
+
+        [If Grade F:]
+        ❌ **SIGNIFICANT REVISION NEEDED**
+        Post requires substantial editing before it's ready.
+
+        Ask: What would you like to do?
+
+        A) Fix issues automatically (I'll apply recommendations)
+        B) Guide me through fixes one by one
+        C) Export report to file for review
+        D) Work with specific agent (Writer/Researcher)
+        E) Skip fixes, return to menu
+
+        Wait for user selection.
+      validation:
+        - "Must provide comprehensive summary"
+        - "Must clearly indicate publishing readiness"
+        - "Must offer actionable next steps"
+
+    - id: "9"
+      name: "Apply Edits (if selected)"
+      description: "Make improvements to draft"
+      instructions: |
+        If user selected A or B in previous step:
+
+        **If A (automatic fixes):**
+        Apply all recommended fixes:
+        - Break up long paragraphs
+        - Simplify long sentences
+        - Fix grammar issues
+        - Improve anchor text for links
+        - Add missing headers if needed
+        - Fix style inconsistencies
+
+        **If B (guided fixes):**
+        For each issue:
+        - Show issue and location
+        - Suggest fix
+        - Ask for approval
+        - Apply if approved
+        - Skip if rejected
+
+        Update draft with all approved changes.
+
+        Count total changes made.
+      validation:
+        - "Must apply fixes carefully"
+        - "Must preserve author's voice"
+
+    - id: "10"
+      name: "Save and Commit Edited Draft"
+      description: "Update draft file"
+      instructions: |
+        1. Write updated draft back to file
+        2. Update metadata if present:
+           - Last Updated: [today]
+           - Status: "Draft - Edited" or "Ready - Final Review"
+        3. Read file to verify
+
+        Commit changes:
+        ```bash
+        git add [draft-path]
+        git commit -m "Edit and polish [post-title]: [N] improvements"
+        git push origin $(git branch --show-current)
+        ```
+
+        Confirm commit successful.
+      validation:
+        - "Must save changes"
+        - "Must commit to git"
+
+    - id: "11"
+      name: "Final Status Update"
+      description: "Update README, history.md, and provide summary"
+      instructions: |
+        1. If post is now ready to publish:
+           - Update README.md status to "Ready - Final Review"
+           - Update Last Updated date
+           - Note: Posts remain in their folder; status tracked in README only
+
+        2. Update history.md in post directory:
+           - Add entry: | [now] | **Editorial review** - [N] issues fixed, grade improved to [grade] | [pending] |
+           - If status changed to ready: | [now] | **Status: Ready - Final Review** | [pending] |
+
+        3. Present final summary:
+
+        **✓ Editorial Review Complete**
+
+        **Changes Made:** [N]
+        - [Summary of changes]
+
+        **Final Grade:** [Grade]
+        **Publishing Status:** [Ready / Needs more work]
+
+        [If ready:]
+        **Next Steps:**
+        A) Mark as ready to publish (update README status)
+        B) Create final.md version
+        C) Return to Editor menu
+        D) Return to Master
+
+        [If not ready:]
+        **Remaining Issues:** [N]
+        [List blocking issues]
+
+        **Recommended Next Steps:**
+        A) Continue editing
+        B) Work with Writer agent
+        C) Work with Researcher agent
+        D) Return to menu
+
+        Wait for user selection and respond accordingly.
+      validation:
+        - "Must update README if status changed"
+        - "Must update history.md with editorial review entry"
+        - "Must provide clear final status"

@@ -1,0 +1,59 @@
+{
+  "name": "blog-team",
+  "version": "1.2.0",
+  "description": "AI-powered blog writing and editing team with multiple personas for brainstorming, writing, editing, promotion, and maintenance",
+  "main": "tools/cli/blog-team-cli.js",
+  "bin": {
+    "blog-team": "tools/blog-team-npx-wrapper.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blog",
+    "blogging",
+    "writing",
+    "ai",
+    "claude",
+    "claude-code",
+    "content",
+    "content-creation",
+    "seo",
+    "markdown",
+    "ai-agents",
+    "workflow",
+    "citations",
+    "internal-linking",
+    "promotion"
+  ],
+  "author": "FortLee.AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FortLeeCo/BlogTeam.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FortLeeCo/BlogTeam/issues"
+  },
+  "homepage": "https://github.com/FortLeeCo/BlogTeam#readme",
+  "files": [
+    "tools/",
+    "src/",
+    "voices/",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "commander": "^12.0.0",
+    "inquirer": "^8.2.6",
+    "ora": "^5.4.1",
+    "chalk": "^4.1.2",
+    "boxen": "^5.1.2",
+    "js-yaml": "^4.1.0",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.0"
+  }
+}

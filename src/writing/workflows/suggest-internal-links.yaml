@@ -1,0 +1,282 @@
+workflow:
+  metadata:
+    id: "suggest-internal-links"
+    name: "Suggest Internal Links"
+    description: "Analyze draft and suggest internal links to related posts"
+    module: "writing"
+    author: "writer-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Draft to Analyze"
+      description: "Choose which draft needs internal links"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with draft files
+        3. Present numbered list
+        4. Ask: Which draft needs internal links?
+        5. Store selected draft path
+      validation:
+        - "Must show drafts"
+        - "User must select valid draft"
+
+    - id: "2"
+      name: "Analyze Draft Content"
+      description: "Extract keywords, topics, and existing links"
+      instructions: |
+        Read draft file and analyze:
+
+        **Content Analysis:**
+        - Total word count
+        - Main topics/keywords
+        - Sections/headers
+        - Existing internal links (count)
+        - Existing external links/citations (count)
+
+        Calculate current link density:
+        - Links per 1000 words
+        - Target: 2-3 links per 1000 words (or 3-4 per 1500)
+
+        Present analysis:
+
+        **Draft Link Analysis: [Post Title]**
+
+        **Word Count:** [N] words
+        **Existing Internal Links:** [N] ([X] per 1000 words)
+        **Existing Citations:** [N]
+
+        **Main Topics:** [List 3-5 key topics/themes from content]
+
+        **Link Density Assessment:**
+        [If < 2 per 1000:] ⚠️ LOW - Should add [N] more links
+        [If 2-3 per 1000:] ✓ OPTIMAL - Could add 1-2 more if highly relevant
+        [If > 4 per 1000:] ⚠️ HIGH - Consider reducing links
+
+        [If low, proceed. If optimal/high, ask if user wants to continue anyway]
+
+        Store analysis.
+      validation:
+        - "Must count words and existing links"
+        - "Must extract main topics"
+        - "Must calculate link density"
+
+    - id: "3"
+      name: "Scan Existing Posts for Matches"
+      description: "Find related posts from README"
+      instructions: |
+        1. Read README.md to get all posts
+        2. For each post:
+           - Extract title
+           - Identify topic/theme from title
+           - Compare with current draft's topics
+           - Assess relevance
+
+        Identify matches:
+        - **Highly relevant**: Shares main topic, directly related
+        - **Moderately relevant**: Related topic, useful context
+        - **Tangentially relevant**: Loosely related
+
+        Store potential matches with relevance scores.
+      validation:
+        - "Must scan all existing posts"
+        - "Must score relevance"
+
+    - id: "4"
+      name: "Generate Link Suggestions"
+      description: "Create specific, actionable link recommendations"
+      instructions: |
+        For each relevant post, create link suggestion:
+
+        1. **Identify linking opportunity**: Find specific paragraph/sentence in draft where link fits naturally
+        2. **Create anchor text**: Descriptive phrase that flows in context
+        3. **Explain value**: Why this link helps readers
+        4. **Suggest placement**: Which section/paragraph
+
+        Prioritize:
+        - Highly relevant posts first
+        - Distribute across sections (not clustered)
+        - Links in first few paragraphs (higher engagement)
+        - Descriptive, natural anchor text
+
+        Generate 5-10 suggestions, sorted by priority.
+
+        Present:
+
+        **Internal Link Suggestions for: [Post Title]**
+
+        **Recommended to Add ([N] suggestions):**
+
+        **HIGH PRIORITY** (Add these):
+
+        1. **Link to:** [Post Title] - [Status]
+           - **Relevance:** [Why this is highly relevant]
+           - **Anchor text:** "[Suggested natural phrase]"
+           - **Place in:** [Section name], paragraph starting with "[first few words...]"
+           - **Value for reader:** [What they'll gain]
+           - **Path:** [relative-path]
+
+        2. **Link to:** [Post Title]
+           - **Relevance:** [Why relevant]
+           - **Anchor text:** "[phrase]"
+           - **Place in:** [Section]
+           - **Value:** [benefit]
+
+        **MEDIUM PRIORITY** (Add if space):
+
+        3. **Link to:** [Post Title]
+           - [Details]
+
+        **Topic Cluster Note:**
+        [If posts form a cluster:] These posts form a topic cluster around [theme]. Consider:
+        - Linking them bidirectionally
+        - Creating a pillar post that links to all
+        - Mentioning this cluster in each post
+
+        **Current link count:** [N]
+        **After adding suggestions:** [N] total
+        **Final density:** [X] per 1000 words
+
+        Ask: Which links should I add?
+
+        A) Add all high priority ([N] links)
+        B) Select specific links (I'll ask which numbers)
+        C) Add custom link (you provide details)
+        D) Skip - draft has enough links
+
+        Wait for selection.
+      validation:
+        - "Must provide 5-10 specific suggestions"
+        - "Must include anchor text and placement"
+        - "Must calculate final density"
+
+    - id: "5"
+      name: "Insert Selected Links"
+      description: "Add links to draft with proper formatting"
+      instructions: |
+        Based on user selection:
+
+        **If A (add all high priority):**
+        - Add all high priority links
+
+        **If B (select specific):**
+        - Show numbered list again
+        - Ask: Which links? (comma-separated: 1,3,5)
+        - Add selected links only
+
+        **If C (custom):**
+        - Ask for:
+          - Which post to link to
+          - Anchor text
+          - Where to place (section/paragraph)
+        - Add custom link
+
+        **If D (skip):**
+        - Skip to summary
+
+        ---
+
+        For each link to add:
+
+        1. Find the target paragraph/sentence in draft
+        2. Identify best position within sentence
+        3. Wrap anchor text in markdown link
+        4. Use relative path format based on post type:
+           - Standalone to standalone: [anchor text](../{other-slug}/)
+           - Series part to standalone: [anchor text](../../{slug}/)
+           - Standalone to series part: [anchor text](../{series-slug}/part-NN-{slug}/)
+
+        **Example (standalone to standalone):**
+        Before: "Type systems help catch errors at compile time."
+        After: "Type systems [help catch errors at compile time](../typescript-type-safety/)."
+
+        **Example (series part to standalone):**
+        Before: "Understanding async patterns is crucial."
+        After: "Understanding [async patterns](../../async-await-guide/) is crucial."
+
+        Ensure:
+        - Natural flow - doesn't disrupt reading
+        - Descriptive anchor text - explains what's linked
+        - Proper relative paths - correct directory structure
+        - Strategic placement - distributed across draft
+
+        Update draft with all selected links.
+
+        Count total links added.
+      validation:
+        - "Must insert links naturally"
+        - "Must use relative paths"
+        - "Must use descriptive anchor text"
+
+    - id: "6"
+      name: "Update Draft File"
+      description: "Save updated draft"
+      instructions: |
+        1. Write updated draft back to file
+        2. Update metadata at top if present:
+           - Last Updated: [today]
+           - Internal Links: [new count]
+        3. Read file to verify changes
+      validation:
+        - "Draft must be updated successfully"
+        - "Links must be present"
+
+    - id: "7"
+      name: "Commit Changes"
+      description: "Save to git"
+      instructions: |
+        Execute git commands:
+
+        ```bash
+        git add [draft-path]
+        git commit -m "Add [N] internal links to [post-title]"
+        git push origin $(git branch --show-current)
+        ```
+
+        Confirm commit successful.
+      validation:
+        - "Must commit and push"
+
+    - id: "8"
+      name: "Provide Link Summary"
+      description: "Show what was added and impact"
+      instructions: |
+        Present summary:
+
+        **✓ Internal Links Added**
+
+        **Draft:** [Post Title]
+
+        **Links Added:** [N]
+
+        **Details:**
+        1. [Post Title] - Anchor: "[text]"
+        2. [Post Title] - Anchor: "[text]"
+        3. ...
+
+        **Updated Statistics:**
+        - Word count: [N]
+        - Total internal links: [N]
+        - Link density: [X] per 1000 words
+        - Status: [✓ Optimal / ⚠️ Could add more / ⚠️ May be too many]
+
+        **Topic Cluster Impact:**
+        [If applicable:] This post now connects to [N] posts in the [theme] cluster.
+
+        **Bidirectional Linking Opportunities:**
+        [If applicable:] Consider adding reciprocal links from:
+        - [Post Title] → back to this post
+        - [Post Title] → back to this post
+
+        **Next Steps - What would you like to do?**
+
+        A) Add more links to this draft
+        B) Add reciprocal links to other posts
+        C) Continue drafting/revising
+        D) Switch to Editor agent
+        E) Return to Writer menu
+
+        Wait for user selection.
+      validation:
+        - "Must show clear summary"
+        - "Must provide updated statistics"
+        - "Must suggest bidirectional linking"

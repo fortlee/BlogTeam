@@ -1,0 +1,233 @@
+workflow:
+  metadata:
+    id: "analyze-idea"
+    name: "Analyze Idea Viability"
+    description: "Deep analysis of a single idea for viability, audience fit, and competition"
+    module: "writing"
+    author: "ideas-manager-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Idea to Analyze"
+      description: "Show all ideas and let user select one"
+      instructions: |
+        1. Read ideas.md
+        2. Parse ideas (skip description section before HTML comment)
+        3. Present numbered list of all ideas
+        4. Ask user: Which idea # would you like me to analyze?
+        5. Store selected idea text for analysis
+      validation:
+        - "Must show all ideas"
+        - "User must select valid idea number"
+
+    - id: "2"
+      name: "Analyze Audience Fit"
+      description: "Assess if idea aligns with target audience"
+      instructions: |
+        Analyze the selected idea for audience fit:
+
+        **Questions to consider:**
+        - Who is the primary audience for this idea?
+        - Does it match the blog's typical readership?
+        - What expertise level is required to understand this?
+        - What problem does it solve for readers?
+
+        Ask user:
+
+        **Who is your target audience for this idea?**
+
+        A) General public / broad audience
+        B) Professionals in the field
+        C) Beginners / learners
+        D) Advanced practitioners
+        E) Other (specify)
+
+        Based on answer, assess fit:
+        - Does this align with existing blog content?
+        - Is the audience too narrow or too broad?
+        - Will this audience find value in this topic?
+
+        Store assessment.
+      validation:
+        - "User must select audience"
+        - "Must provide clear assessment"
+
+    - id: "3"
+      name: "Assess Viability and Timing"
+      description: "Evaluate if the idea is viable and timely"
+      instructions: |
+        Evaluate the idea's viability:
+
+        **Consider:**
+        - Is this topic trending or evergreen?
+        - Is there current interest/demand?
+        - Do you have the expertise to write this?
+        - Can you provide unique value/perspective?
+
+        Ask user:
+
+        **What's your angle or unique perspective on this?**
+
+        [User provides text answer]
+
+        Then ask:
+
+        **Do you have expertise/experience in this area?**
+
+        A) Yes - I'm an expert
+        B) Yes - I have practical experience
+        C) Some - I'd need to research more
+        D) No - This would require significant research
+
+        Assess viability based on:
+        - Uniqueness of angle
+        - User's expertise level
+        - Feasibility of research if needed
+
+        Store assessment.
+      validation:
+        - "User must answer both questions"
+        - "Must evaluate viability clearly"
+
+    - id: "4"
+      name: "Research Competition (Manual Analysis)"
+      description: "Ask user to provide competition insights"
+      instructions: |
+        Since we don't have live search capabilities in workflows, guide the user:
+
+        **Competition Research:**
+
+        I'll help you assess competition. Please do a quick search:
+
+        1. Search Google for: [the idea/topic]
+        2. Check first page results
+
+        **Questions:**
+
+        A) **How many results did you find?**
+           - Few (< 10 quality posts)
+           - Moderate (10-50 posts)
+           - Many (50+ posts)
+
+        B) **Quality of existing content?**
+           - Mostly low-quality
+           - Mix of quality
+           - Mostly high-quality, authoritative sources
+
+        C) **Can you add unique value?**
+           - Yes - I have a unique angle
+           - Maybe - I'd need to differentiate
+           - No - It's been thoroughly covered
+
+        Based on answers, assess competition level:
+        - Low competition + unique angle = HIGH viability
+        - High competition + no differentiation = LOW viability
+
+        Store assessment.
+      validation:
+        - "User must provide competition data"
+        - "Must calculate competition score"
+
+    - id: "5"
+      name: "Check Against Existing Content"
+      description: "Ensure no duplication with existing posts"
+      instructions: |
+        1. Read README.md to see all existing posts
+        2. Compare selected idea against:
+           - Existing post titles
+           - Existing post topics/themes
+           - Planned posts in progress
+
+        Identify:
+        - Is this topic already covered?
+        - Could this complement existing content?
+        - Would this create redundancy?
+
+        Present findings:
+
+        **Existing Content Check:**
+
+        [If similar content exists:]
+        ⚠️ Similar content found:
+        - Post: "[title]" - Status: [status]
+        - Overlap: [describe overlap]
+        - Recommendation: [differentiate, expand existing, or skip]
+
+        [If no overlap:]
+        ✓ No similar content found - this fills a gap
+
+        [If complementary:]
+        ✓ Complements existing post: "[title]"
+        - Could link between them
+        - Could expand into series
+
+        Store findings.
+      validation:
+        - "Must check against README.md"
+        - "Must identify any overlaps"
+
+    - id: "6"
+      name: "Calculate Overall Score"
+      description: "Assign priority score and recommendation"
+      instructions: |
+        Calculate overall viability score (1-10) based on:
+
+        **Scoring Criteria:**
+        - Audience fit (0-3 points):
+          - Perfect fit: 3 pts
+          - Good fit: 2 pts
+          - Weak fit: 1 pt
+          - Poor fit: 0 pts
+
+        - Expertise level (0-2 points):
+          - Expert: 2 pts
+          - Experience: 2 pts
+          - Some knowledge: 1 pt
+          - Need research: 1 pt
+
+        - Competition (0-3 points):
+          - Low competition + unique angle: 3 pts
+          - Moderate competition + differentiation: 2 pts
+          - High competition + some differentiation: 1 pt
+          - Saturated + no differentiation: 0 pts
+
+        - Timing/Relevance (0-2 points):
+          - Trending now: 2 pts
+          - Evergreen: 2 pts
+          - Declining interest: 1 pt
+          - Not relevant: 0 pts
+
+        Total possible: 10 points
+
+        Calculate score and present:
+
+        **Viability Analysis: "[Idea Text]"**
+
+        📊 **Overall Score: [X]/10**
+
+        **Breakdown:**
+        - Audience Fit: [X]/3 - [reasoning]
+        - Your Expertise: [X]/2 - [reasoning]
+        - Competition Level: [X]/3 - [reasoning]
+        - Timing/Relevance: [X]/2 - [reasoning]
+
+        **Assessment:**
+        [If 8-10:] ✅ HIGH PRIORITY - Strong viability, recommend starting soon
+        [If 5-7:] ⚠️ MEDIUM PRIORITY - Viable but needs more planning/research
+        [If 0-4:] ❌ LOW PRIORITY - Weak viability, consider deprioritizing
+
+        **Recommendation:**
+        [Specific actionable recommendation]
+
+        **Next Steps:**
+        A) Start brainstorming this idea now
+        B) Research more before starting
+        C) Modify idea to improve viability
+        D) Deprioritize/delete this idea
+        E) Return to ideas menu
+
+        Wait for user selection.
+      validation:
+        - "Must calculate total score"
+        - "Must provide clear recommendation"
+        - "Must offer next steps"

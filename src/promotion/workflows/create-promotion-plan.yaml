@@ -1,0 +1,497 @@
+workflow:
+  metadata:
+    id: "create-promotion-plan"
+    name: "Create Comprehensive Promotion Plan"
+    description: "Strategic multi-platform promotion strategy with timeline"
+    module: "promotion"
+    author: "promoter-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Blog Post"
+      description: "Choose post to promote"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with draft.md or final.md (preferably published)
+        3. Present numbered list
+        4. Ask: Which post needs a comprehensive promotion plan?
+        5. Store selected post path
+      validation:
+        - "Must show available posts"
+        - "User must select valid post"
+
+    - id: "2"
+      name: "Analyze Post and Set Goals"
+      description: "Understand content and define promotion objectives"
+      instructions: |
+        Read post and gather information:
+
+        **Post Analysis: [Post Title]**
+
+        **Content Overview:**
+        - Main topic: [Topic]
+        - Target audience: [Audience]
+        - Content type: [Tutorial/Opinion/Research/Guide/etc.]
+        - Depth level: [Beginner/Intermediate/Advanced]
+        - Word count: [N]
+        - Unique value: [What makes this special]
+
+        **Promotion Goals:**
+
+        Ask user to select primary goals (can select multiple):
+
+        A) Build traffic to blog
+        B) Establish expertise/credibility
+        C) Generate discussion/engagement
+        D) Build email list/followers
+        E) Support related content (part of series)
+        F) Test ideas for future content
+
+        User selection: [Store selections]
+
+        **Success Metrics:**
+
+        Based on goals, define success:
+        - Traffic: [Target page views]
+        - Engagement: [Target comments/shares]
+        - Conversions: [Target subscribers/followers]
+        - Discussion: [Quality conversations started]
+
+        **Constraints:**
+
+        Ask about constraints:
+        - Time available: [Hours per week for promotion]
+        - Platforms already active on: [List]
+        - Budget: [Free only / Paid ads considered]
+        - Content repurposing capacity: [Can create videos/graphics: Yes/No]
+
+        Store goals and constraints.
+      validation:
+        - "Must define clear goals"
+        - "Must understand constraints"
+
+    - id: "3"
+      name: "Find Reddit Opportunities"
+      description: "Quick Reddit scan for opportunities"
+      instructions: |
+        Use WebSearch to find 5-7 Reddit opportunities (abbreviated from full workflow):
+
+        **Reddit Opportunities:**
+
+        Search for:
+        - Relevant subreddits (3-5)
+        - Specific recent posts in those subreddits (2-3 per subreddit)
+
+        List top opportunities:
+
+        1. **r/[subreddit]** - "[Post title]"
+           - URL: [Link]
+           - Relevance: [Score]/10
+           - Strategy: [Brief approach]
+
+        2. [Next opportunity]
+
+        [List 5-7 total]
+
+        Store for plan.
+      validation:
+        - "Must find specific Reddit opportunities"
+
+    - id: "4"
+      name: "Find YouTube Opportunities"
+      description: "Quick YouTube scan for opportunities"
+      instructions: |
+        Use WebSearch to find 3-5 YouTube opportunities:
+
+        **YouTube Opportunities:**
+
+        Search for relevant videos in topic area.
+
+        List top opportunities:
+
+        1. **"[Video Title]"** by [Channel]
+           - URL: [Link]
+           - Relevance: [Score]/10
+           - Strategy: [Brief approach]
+
+        2. [Next opportunity]
+
+        [List 3-5 total]
+
+        Store for plan.
+      validation:
+        - "Must find specific YouTube opportunities"
+
+    - id: "5"
+      name: "Identify Other Platform Opportunities"
+      description: "Survey additional platforms"
+      instructions: |
+        Based on goals and content type, identify other platforms:
+
+        **Other Platform Opportunities:**
+
+        **Twitter/X:**
+        - **Approach**: [Thread summarizing key points / Hot take / Ask question]
+        - **Hashtags**: [Relevant hashtags]
+        - **Timing**: [Best time to post]
+        - **Effort**: Low
+        - **Expected reach**: [Estimate based on followers]
+
+        **LinkedIn:**
+        - **Approach**: [Professional angle / Thought leadership]
+        - **Format**: [Article repost / Native post with link]
+        - **Timing**: [Weekday mornings]
+        - **Effort**: Low
+        - **Expected reach**: [Estimate]
+
+        **Hacker News:**
+        - **Fit**: [Yes/No/Maybe] - [Why]
+        - **Approach**: [If yes: submission strategy]
+        - **Timing**: [Weekday morning US time]
+        - **Risk**: [High - can be harsh / Medium / Low]
+
+        **Dev.to / Hashnode / Medium:**
+        - **Cross-post**: [Yes/No]
+        - **Benefits**: [Built-in audience, SEO]
+        - **Effort**: Low (if canonical link used)
+
+        **Niche Communities:**
+        - **Discord servers**: [Any relevant servers]
+        - **Slack communities**: [Any relevant workspaces]
+        - **Forums**: [Specific forums in niche]
+
+        **Newsletter/Email:**
+        - **Your list**: [Send to subscribers: Yes/No]
+        - **Guest newsletters**: [Opportunities to be featured]
+
+        Store additional opportunities.
+      validation:
+        - "Must consider multiple platforms"
+        - "Must assess fit for content type"
+
+    - id: "6"
+      name: "Consider Content Repurposing"
+      description: "Identify repurposing opportunities"
+      instructions: |
+        Based on constraints (time, skills), suggest repurposing:
+
+        **Content Repurposing Opportunities:**
+
+        **High Priority (Recommended):**
+
+        1. **Twitter Thread**
+           - Format: [N] tweet thread summarizing key points
+           - Effort: Low (1-2 hours)
+           - Impact: High (drives traffic)
+           - Draft: [Quick draft of hook tweet]
+
+        2. **[Next high priority format]**
+
+        **Medium Priority (If time allows):**
+
+        3. **[Format]**
+           - Effort: [Estimate]
+           - Impact: [Estimate]
+
+        **Lower Priority:**
+
+        4. **[Format]**
+
+        **Recommendation:**
+        Focus on [N] repurposing formats based on time available and skills.
+
+        Store repurposing plan.
+      validation:
+        - "Must prioritize based on effort/impact"
+        - "Must consider user constraints"
+
+    - id: "7"
+      name: "Create Timeline"
+      description: "Strategic promotion schedule"
+      instructions: |
+        Create week-by-week promotion timeline:
+
+        **Promotion Timeline: [Post Title]**
+
+        **Goals**: [Restate primary goals]
+        **Duration**: [N] weeks
+        **Time commitment**: [X] hours/week
+
+        ---
+
+        **Week 1: Launch & Initial Push**
+
+        **Day 1-2: Owned Channels**
+        - [ ] Publish blog post
+        - [ ] Send to email list (if applicable)
+        - [ ] Post to Twitter/X: [Strategy]
+        - [ ] Post to LinkedIn: [Strategy]
+        - [ ] Cross-post to Dev.to / Medium (if applicable)
+
+        **Day 3-4: Reddit Wave 1**
+        - [ ] Post to r/[subreddit] on "[Post title]"
+          - URL: [Link]
+          - Comment drafted: [Yes]
+        - [ ] Post to r/[subreddit] on "[Post title]"
+          - URL: [Link]
+
+        **Day 5-7: YouTube Wave 1**
+        - [ ] Comment on "[Video]"
+          - URL: [Link]
+        - [ ] Comment on "[Video]"
+          - URL: [Link]
+
+        ---
+
+        **Week 2: Sustained Engagement**
+
+        **Day 8-10: Reddit Wave 2**
+        - [ ] Post to r/[subreddit] on "[Post title]"
+          - URL: [Link]
+        - [ ] Monitor and respond to Week 1 comments
+
+        **Day 11-14: YouTube Wave 2**
+        - [ ] Comment on "[Video]"
+          - URL: [Link]
+        - [ ] Continue engaging with existing comments
+
+        ---
+
+        **Week 3: Repurposed Content**
+
+        **Day 15-17:**
+        - [ ] [Repurposed content format]: Publish and promote
+        - [ ] Continue monitoring existing discussions
+
+        **Day 18-21:**
+        - [ ] [Another repurposed format or additional platform]
+        - [ ] Analyze early results
+
+        ---
+
+        **Week 4: Long Tail & Optimization**
+
+        **Day 22-28:**
+        - [ ] Niche communities: [Specific communities]
+        - [ ] Answer any related questions on platforms
+        - [ ] Consider follow-up content based on engagement
+        - [ ] Update promotion-tracking.md with results
+
+        ---
+
+        **Ongoing (Weeks 5+):**
+        - Monitor for opportunities to reference post in relevant discussions
+        - Track organic traffic and engagement
+        - Learn from what worked/didn't work
+
+        **Timeline saved to promotion plan.**
+
+        Store timeline.
+      validation:
+        - "Must create realistic timeline"
+        - "Must space out promotions"
+        - "Must include monitoring/response time"
+
+    - id: "8"
+      name: "Prioritize Actions"
+      description: "Identify highest-impact activities"
+      instructions: |
+        Based on goals, effort, and expected impact, prioritize:
+
+        **Priority Breakdown:**
+
+        **Must Do (High Impact, Reasonable Effort):**
+        1. [Action] - [Why essential]
+        2. [Action] - [Why essential]
+        3. [Action] - [Why essential]
+
+        **Should Do (Good Impact, Manageable Effort):**
+        4. [Action] - [Why valuable]
+        5. [Action] - [Why valuable]
+
+        **Nice to Have (Good Impact, High Effort OR Low Impact, Low Effort):**
+        6. [Action]
+        7. [Action]
+
+        **Skip (Low Impact, High Effort):**
+        - [Action] - [Why skipping]
+
+        **If Time is Limited:**
+        Focus ONLY on "Must Do" items in Week 1-2.
+
+        **If Time is Abundant:**
+        Execute all "Must Do" and "Should Do," consider "Nice to Have."
+
+        Store priorities.
+      validation:
+        - "Must prioritize realistically"
+        - "Must consider effort vs. impact"
+
+    - id: "9"
+      name: "Generate Promotion Plan Document"
+      description: "Create comprehensive plan file"
+      instructions: |
+        Create promotion-plan.md in post directory:
+
+        ```markdown
+        # Promotion Plan: [Post Title]
+
+        **Created**: [Date]
+        **Status**: [Active/Completed]
+
+        ## Goals
+
+        - [Goal 1]
+        - [Goal 2]
+        - [Goal 3]
+
+        ## Success Metrics
+
+        - [Metric 1]: Target [N]
+        - [Metric 2]: Target [N]
+
+        ## Timeline Overview
+
+        **Duration**: [N] weeks
+        **Time Commitment**: [X] hours/week
+        **Start Date**: [Date]
+
+        ## Promotion Opportunities
+
+        ### Reddit ([N] opportunities)
+
+        1. **r/[subreddit]** - "[Post title]"
+           - URL: [Link]
+           - Score: [X]/10
+           - Strategy: [Brief]
+           - Timing: [Week/Day]
+
+        [List all]
+
+        ### YouTube ([N] opportunities)
+
+        1. **"[Video]"** by [Channel]
+           - URL: [Link]
+           - Score: [X]/10
+           - Strategy: [Brief]
+           - Timing: [Week/Day]
+
+        [List all]
+
+        ### Other Platforms
+
+        - **Twitter/X**: [Strategy and timing]
+        - **LinkedIn**: [Strategy and timing]
+        - **[Other]**: [Strategy and timing]
+
+        ## Content Repurposing
+
+        1. **[Format]** - [Effort] - [Timing]
+        2. **[Format]** - [Effort] - [Timing]
+
+        ## Week-by-Week Timeline
+
+        [Paste detailed timeline from step 7]
+
+        ## Priority Actions
+
+        **Must Do:**
+        1. [Action]
+        2. [Action]
+
+        **Should Do:**
+        3. [Action]
+        4. [Action]
+
+        **Nice to Have:**
+        5. [Action]
+
+        ## Tracking
+
+        See promotion-tracking.md for detailed results and updates.
+
+        ## Notes
+
+        [Any additional context, ideas, or considerations]
+        ```
+
+        Save to post directory.
+      validation:
+        - "Must create comprehensive plan document"
+        - "Must include all opportunities and timeline"
+
+    - id: "10"
+      name: "Save and Commit"
+      description: "Commit promotion plan"
+      instructions: |
+        1. Save promotion-plan.md to post directory
+        2. Create or update promotion-tracking.md with planned promotions
+        3. Commit:
+
+        ```bash
+        git add [post-directory]/promotion-plan.md [post-directory]/promotion-tracking.md
+        git commit -m "Create comprehensive promotion plan for [post-title]"
+        git push origin $(git branch --show-current)
+        ```
+
+        4. Confirm saved.
+      validation:
+        - "Must commit files"
+
+    - id: "11"
+      name: "Provide Execution Summary"
+      description: "Clear next steps"
+      instructions: |
+        Present final summary:
+
+        **✓ Comprehensive Promotion Plan Created**
+
+        **Post**: [Post Title]
+
+        **Plan Overview:**
+        - **Duration**: [N] weeks
+        - **Total opportunities**: [N]
+        - **Platforms**: [List]
+        - **Time required**: [X] hours/week
+
+        **Week 1 Priority Actions (Start Now):**
+
+        1. [First action] - [Timing]
+        2. [Second action] - [Timing]
+        3. [Third action] - [Timing]
+
+        **Files Created:**
+        - promotion-plan.md - Full strategic plan
+        - promotion-tracking.md - Tracking template
+
+        **Success Metrics:**
+        - [Metric]: Target [N]
+        - [Metric]: Target [N]
+
+        **Remember:**
+        - ✓ Space out promotions (don't spam)
+        - ✓ Lead with value on every platform
+        - ✓ Monitor and respond to engagement
+        - ✓ Track results in promotion-tracking.md
+        - ✓ Learn and adjust based on what works
+
+        **Quick Start Checklist:**
+        - [ ] Review full promotion-plan.md
+        - [ ] Draft all comments/posts in advance
+        - [ ] Check platform rules before posting
+        - [ ] Set calendar reminders for timing
+        - [ ] Prepare to monitor and respond
+
+        **Next Steps - What would you like to do?**
+
+        A) Draft specific Reddit comments (run Reddit workflow)
+        B) Draft specific YouTube comments (run YouTube workflow)
+        C) Draft Twitter thread / LinkedIn post
+        D) Start executing Week 1 actions
+        E) Return to Promoter menu
+        F) Return to Master
+
+        Wait for user selection.
+      validation:
+        - "Must provide clear execution path"
+        - "Must highlight Week 1 priorities"

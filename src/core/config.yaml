@@ -1,0 +1,44 @@
+core:
+  version: "1.0.0"
+  name: "Blog Team Core"
+
+# These will be populated during installation
+user_settings:
+  user_name: "{user_name}"
+  blog_name: "{blog_name}"
+  communication_language: "{communication_language}"
+  blog_posts_dir: "{blog_posts_dir}"
+  blog_team_dir: "{blog_team_dir}"
+
+# Path templates
+paths:
+  project_root: "{project-root}"
+  blog_team_dir: "{project-root}/{blog_team_dir}"
+  blog_posts_dir: "{project-root}/{blog_posts_dir}"
+  config_dir: "{project-root}/{blog_team_dir}/_cfg"
+  readme: "{project-root}/README.md"
+
+# Slug generation settings
+slug_settings:
+  max_length: 60
+  truncate_at_word: true
+  format: "lowercase-hyphenated"
+
+# History tracking events
+history_events:
+  - "Created brainstorm"
+  - "Refined thesis"
+  - "Added research"
+  - "Started draft"
+  - "Major pivot"
+  - "Draft complete"
+  - "Editorial review"
+  - "Fact-check complete"
+  - "Status change"
+  - "Published"
+
+# Git settings
+git:
+  auto_commit: true
+  auto_push: true
+  commit_after_each_action: true

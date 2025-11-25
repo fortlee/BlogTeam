@@ -1,0 +1,550 @@
+workflow:
+  metadata:
+    id: "create-brainstorm"
+    name: "Create Blog Post Brainstorm"
+    description: "Guide user through creating a structured blog post brainstorm"
+    module: "writing"
+    author: "brainstorm-agent"
+
+  steps:
+    - id: "0"
+      name: "Present Existing Ideas"
+      description: "Read ideas.md and present captured ideas to user"
+      instructions: |
+        1. Read {project-root}/ideas.md using the Read tool
+
+        2. Parse the file to extract ideas:
+           - Skip everything before the HTML comment: <!-- Add your ideas below, separated by ---- -->
+           - After that comment, ideas are separated by "----"
+           - Each idea is a block of text between separators
+           - Ignore empty blocks, whitespace-only blocks, and HTML comments
+           - The template includes example ideas - those count as real ideas unless deleted
+
+        3. Present ideas to user:
+
+        **I see you have some ideas captured. Would you like to work on one of these?**
+
+        [If no ideas exist after the HTML comment, say: "No ideas captured yet in ideas.md"]
+
+        [If ideas exist, show numbered list:]
+        1. [First idea text]
+        2. [Second idea text]
+        3. [Third idea text]
+        ...
+
+        **Select an option:**
+
+        A) Work on idea #[number]
+        B) Explore a completely new idea
+
+        Wait for user selection.
+
+        Store selected idea text if A is chosen (you'll need it for later steps).
+      validation:
+        - "Must read ideas.md file"
+        - "Must skip description section before HTML comment"
+        - "Must parse and present ideas if they exist"
+        - "User must select A or B"
+
+    - id: "0.5"
+      name: "Analyze Series Fit (if existing idea selected)"
+      description: "Analyze if selected idea fits into existing series"
+      instructions: |
+        **ONLY execute this step if user selected option A (existing idea) in step 0.**
+
+        If user selected B (new idea), SKIP to step 1.
+
+        ---
+
+        For existing idea selection:
+
+        1. Read README.md to see existing posts and series
+
+        2. Analyze the selected idea text:
+           - What topic/theme does it cover?
+           - Does it relate to any existing series?
+           - Could it expand on an existing standalone post?
+
+        3. Make a recommendation:
+
+        **Analyzing your idea...**
+
+        [If no existing posts/series:]
+        "You have no existing posts. This will be your first post."
+        → Recommend: Standalone post
+        → Skip to step 2
+
+        [If related series exists:]
+        "This idea relates to your existing series: [Series Name]"
+        "The series currently has [N] parts covering [topics]"
+        "This idea could fit as Part [N+1] focusing on [specific angle]"
+
+        **My recommendation:**
+
+        A) Add as part [N+1] of "[Series Name]" series
+        B) Create as standalone post (different enough to stand alone)
+        C) Start a new series with this as Part 1
+
+        [If related standalone post exists:]
+        "This idea relates to your standalone post: [Post Title]"
+        "That post covers [summary]"
+
+        **My recommendation:**
+
+        A) Convert "[Post Title]" into a series and add this as Part 2
+        B) Create as separate standalone post
+        C) Start a new series incorporating both ideas
+
+        [If no clear relation:]
+        "This idea doesn't clearly relate to existing posts."
+
+        **My recommendation:**
+
+        A) Create as standalone post
+        B) Start a new series with this as Part 1
+
+        Wait for user selection and store the decision (standalone, new series, or add to existing series).
+      validation:
+        - "Only execute if user picked existing idea"
+        - "Must analyze README.md for existing posts"
+        - "Must provide clear recommendation with options"
+        - "User must select an option"
+
+    - id: "1"
+      name: "Gather Post Information"
+      description: "Collect or confirm basic information about the blog post"
+      instructions: |
+        **If working from existing idea (user selected A in step 0):**
+
+        You already have the idea text. Now confirm/gather:
+
+        1. **Working title** (suggest one based on idea text, user can modify)
+           Current idea: [show idea text]
+           Suggested title: [your suggestion]
+           Accept or provide different title?
+
+        2. **Target audience:**
+           A) General public
+           B) Experts in field
+           C) Beginners
+           D) Intermediate practitioners
+           E) Other (specify)
+
+        3. **Based on step 0.5 decision:**
+           - If standalone: Note it's standalone
+           - If new series: Ask for series title and planned number of parts
+           - If add to series: Confirm series name and part number
+
+        ---
+
+        **If exploring new idea (user selected B in step 0):**
+
+        Ask for:
+
+        1. **What's the idea?** (brief description or working title)
+
+        2. **Post structure:**
+           A) Standalone post - A single, complete article
+           B) Start a new series - First post of a multi-part series
+
+        3. **Target audience:**
+           A) General public
+           B) Experts in field
+           C) Beginners
+           D) Intermediate practitioners
+           E) Other (specify)
+
+        4. **If new series (B):**
+           - Series title
+           - Planned number of parts
+           - Brief description of how parts will be divided
+
+        Collect all answers before proceeding.
+      validation:
+        - "Title/idea must be provided"
+        - "Target audience must be clearly defined"
+        - "Post structure must be determined (standalone, new series, or add to series)"
+        - "For series: series title and structure must be clear"
+
+    - id: "2"
+      name: "Identify Core Thesis"
+      description: "Extract the main argument or point of the post"
+      instructions: |
+        Ask the user:
+
+        **What is the core thesis or main point of this post?**
+
+        [If working from existing idea, show the idea text as context]
+
+        In 1-3 sentences, what is the key message you want readers to take away?
+
+        Then ask:
+
+        **Why does this matter?**
+
+        A) Solves a common problem
+        B) Challenges conventional wisdom
+        C) Explains complex topic simply
+        D) Shares novel insight or research
+        E) Other (specify)
+
+        Push for clarity. If the thesis is vague, ask follow-up questions until it's sharp and specific.
+      validation:
+        - "Thesis must be clear and specific"
+        - "Must articulate why it matters"
+
+    - id: "3"
+      name: "Outline Key Arguments"
+      description: "Identify supporting arguments and structure"
+      instructions: |
+        Ask the user:
+
+        **What are the 3-5 main arguments or sections that support your thesis?**
+
+        For each argument, ask:
+        1. Main point
+        2. Supporting evidence/examples (if available)
+        3. Potential counterarguments to address
+
+        **Logical flow - How should these arguments be ordered?**
+
+        A) Chronological (time-based)
+        B) Problem → Solution
+        C) Simple → Complex (build understanding)
+        D) Strongest argument first (lead with impact)
+        E) Weakest to strongest (build momentum)
+        F) Other structure (specify)
+
+        Guide user to select the most logical structure for their thesis.
+      validation:
+        - "Must have at least 2 key arguments"
+        - "Each argument must be distinct and relevant"
+        - "Structure must be clearly defined"
+
+    - id: "4"
+      name: "Identify Gaps and Questions"
+      description: "Find areas that need research or development"
+      instructions: |
+        Review what's been discussed and ask:
+
+        **What information is missing?**
+
+        For each key argument, identify:
+        - Do you have evidence/examples?
+        - Are there credible sources to cite?
+        - What counterarguments exist?
+        - What questions might skeptical readers have?
+
+        Create a list of research tasks or questions to investigate before writing.
+      validation:
+        - "Must identify at least some gaps or research needs"
+
+    - id: "5"
+      name: "Generate Slug and Create Directory Structure"
+      description: "Create post directory with slug and brainstorm.md"
+      instructions: |
+        1. Generate a slug from the post title:
+
+        **Slug generation algorithm:**
+        ```
+        a. Convert title to lowercase
+        b. Replace spaces and special characters with hyphens
+        c. Remove leading/trailing hyphens
+        d. Truncate at word boundary if > 60 characters
+        e. Check for existing slugs in {blog_posts_dir}/ to avoid duplicates
+           - If duplicate, append -2, -3, etc.
+        ```
+
+        2. Present slug to user for confirmation:
+
+        **Generated slug:** `{slug}`
+
+        **Full path will be:**
+        - Standalone: `{blog_posts_dir}/{slug}/`
+        - New series: `{blog_posts_dir}/{series-slug}/`
+        - Series part: `{blog_posts_dir}/{series-slug}/part-01-{part-slug}/`
+
+        **Options:**
+        A) Accept this slug
+        B) Modify slug (enter your own)
+        C) Suggest shorter alternative
+
+        Wait for user confirmation before proceeding.
+
+        3. Determine directory path based on post type:
+
+        **Standalone post:**
+        - Path: {blog_posts_dir}/{slug}/
+
+        **New series:**
+        - Series dir: {blog_posts_dir}/{series-slug}/
+        - First part: {blog_posts_dir}/{series-slug}/part-01-{part-slug}/
+        - Create series metadata and history files in series dir
+
+        **Add to existing series:**
+        - Find existing series directory from README
+        - Determine next part number (part-02, part-03, etc.)
+        - Create: {blog_posts_dir}/{existing-series-slug}/part-{NN}-{part-slug}/
+
+        4. Create the directory using Bash or fs operations
+
+        5. Create **history.md** in the post directory:
+
+        ```markdown
+        # History: [Title]
+
+        > Lifecycle log for this post. Each entry captures significant events and progress.
+
+        ## Timeline
+
+        | Date | Event | Commit |
+        |------|-------|--------|
+        | [now] | **Created brainstorm** - [brief description: e.g., "Initial idea from ideas.md about X"] | [pending] |
+
+        ## Notes
+
+        *Optional context that doesn't fit in timeline entries*
+        ```
+
+        6. Create **brainstorm.md** in the post directory with this structure:
+
+        ```markdown
+        # [Title]
+
+        **Status:** Draft - Brainstorm
+        **Created:** [Date]
+        **Last Updated:** [Date]
+        **Target Audience:** [Audience]
+        **Series:** [Series name and part number, or "Standalone"]
+
+        ## Core Thesis
+
+        [1-3 sentence thesis statement]
+
+        ### Why This Matters
+
+        [Explanation of significance]
+
+        ## Key Arguments
+
+        ### 1. [First Argument]
+        - **Main Point:** [Description]
+        - **Evidence/Examples:** [List or "TBD"]
+        - **Counterarguments:** [List or "TBD"]
+
+        ### 2. [Second Argument]
+        [Same structure]
+
+        [... continue for all arguments ...]
+
+        ## Logical Flow
+
+        **Structure:** [Selected structure type]
+
+        **Outline:**
+        1. Introduction - [Hook and thesis]
+        2. [First argument]
+        3. [Second argument]
+        4. [Additional arguments]
+        5. Conclusion - [Key takeaways]
+
+        ## Research Needed
+
+        - [ ] [Research task 1]
+        - [ ] [Research task 2]
+        - [ ] [Additional tasks...]
+
+        ## Notes
+
+        [Any additional thoughts, ideas, or considerations]
+
+        ---
+
+        **Original Idea** (if from blog-post-ideas.md):
+        [Copy the original idea text here for reference]
+        ```
+
+        7. If new series, create files in series directory:
+
+        Create: {series-dir}/series-info.md
+
+        ```markdown
+        # [Series Title]
+
+        **Slug:** [series-slug]
+        **Created:** [Date]
+        **Planned Parts:** [Number]
+
+        ## Series Overview
+
+        [Brief description of series scope and how parts are divided]
+
+        ## Parts
+
+        1. part-01-{slug} - [Part 1 Title] - Draft - Brainstorm
+        2. part-02-{slug} - [Part 2 Title] - (planned)
+        ...
+        ```
+
+        Create: {series-dir}/history.md
+
+        ```markdown
+        # History: [Series Title]
+
+        > Lifecycle log for this series.
+
+        ## Timeline
+
+        | Date | Event | Commit |
+        |------|-------|--------|
+        | [now] | **Series created** - Started [N]-part series on [topic] | [pending] |
+
+        ## Notes
+
+        *Optional context*
+        ```
+
+        Use Read tool to verify files were created correctly.
+      validation:
+        - "Slug must be confirmed by user"
+        - "Directory must be created successfully"
+        - "history.md must exist with initial entry"
+        - "brainstorm.md must exist and contain all required sections"
+        - "If series: series-info.md and series history.md must exist"
+
+    - id: "6"
+      name: "Remove Selected Idea from ideas.md"
+      description: "Clean up the ideas file after using an idea"
+      instructions: |
+        **ONLY execute this step if user selected existing idea in step 0 (option A).**
+
+        If user explored new idea (option B), SKIP this step.
+
+        ---
+
+        1. Read current ideas.md
+
+        2. Remove the selected idea block:
+           - Keep everything before the HTML comment (the description section)
+           - Find the selected idea text after the HTML comment
+           - Remove it along with its separator (----)
+           - Clean up any double separators
+           - Preserve the HTML comment line
+
+        3. Write the updated content back to ideas.md
+
+        4. Confirm to user: "Removed idea from ideas.md (it's now in your brainstorm!)"
+      validation:
+        - "Only execute if existing idea was selected"
+        - "Must preserve the description section"
+        - "Must remove the correct idea block"
+        - "File must be updated successfully"
+
+    - id: "7"
+      name: "Update README.md Progress Table"
+      description: "Add new post to README with link to directory"
+      instructions: |
+        1. Read the current README.md from {project-root}/README.md
+
+        2. Find the progress table (starts with "## 📊 Blog Progress")
+
+        3. Determine what to add based on post type:
+
+        **Standalone post:**
+        Add single row:
+        | [Title] | Draft - Brainstorm | [Today] | [Today] | Standalone | [link] |
+
+        **New series:**
+        Add row for first part:
+        | [Part 1 Title] | Draft - Brainstorm | [Today] | [Today] | [Series Name] (Part 1) | [link] |
+
+        **Add to existing series:**
+        Add row for new part:
+        | [Part N Title] | Draft - Brainstorm | [Today] | [Today] | [Series Name] (Part N) | [link] |
+
+        4. Format the link column:
+        - Standalone: [View](./{blog_posts_dir}/{slug}/)
+        - Series part: [View](./{blog_posts_dir}/{series-slug}/part-{NN}-{part-slug}/)
+
+        5. If table was empty ("*No posts yet*"), replace that row
+
+        6. Update the "Last updated" timestamp at bottom of README
+
+        7. Write the updated README.md using Edit tool
+      validation:
+        - "README.md must be updated successfully"
+        - "New post must appear in progress table"
+        - "Link must be correctly formatted and functional"
+        - "Last updated timestamp must be current"
+
+    - id: "8"
+      name: "Git Commit Changes"
+      description: "Commit the new brainstorm to git"
+      instructions: |
+        Execute these git commands using Bash tool:
+
+        1. Stage the new files:
+           ```bash
+           git add {post-directory-path}
+           git add ideas.md
+           git add README.md
+           ```
+
+        2. Commit with clear message:
+           ```bash
+           git commit -m "Add brainstorm: [post-title]"
+           ```
+
+        3. Push to origin:
+           ```bash
+           git push origin $(git branch --show-current)
+           ```
+
+        If any command fails, report the error to the user and ask how to proceed.
+
+        Remind the user: "✓ Committed and pushed your brainstorm. Remember to commit frequently as you develop your ideas!"
+      validation:
+        - "Files must be staged"
+        - "Commit must succeed"
+        - "Push should be attempted (failure is okay if no remote)"
+
+    - id: "9"
+      name: "Summarize and Offer Next Steps"
+      description: "Recap what was created and suggest next actions"
+      instructions: |
+        Present a summary:
+
+        **✓ Brainstorm Complete**
+
+        **Created:**
+        - Post directory: {blog_posts_dir}/{slug}/ (or {series-slug}/part-{NN}-{slug}/ for series)
+        - brainstorm.md with thesis, arguments, and structure
+        - history.md to track post lifecycle
+        - Updated README.md progress tracking (with clickable link)
+        - Committed to git and pushed to origin
+
+        [If idea was from ideas.md:]
+        - Removed idea from ideas.md
+
+        **Post Details:**
+        - Title: [title]
+        - Slug: [slug]
+        - Type: [Standalone / Part N of Series Name]
+        - Target Audience: [audience]
+        - Status: Draft - Brainstorm
+
+        **Research Needed:**
+        [List of research tasks from step 4]
+
+        **Next Steps - What would you like to do?**
+
+        A) Refine this brainstorm further (ask more questions)
+        B) Start another brainstorm (new post)
+        C) Switch to Writer agent to begin drafting
+        D) Review all posts in progress
+        E) Return to main menu
+
+        Wait for user selection and respond accordingly.
+      validation:
+        - "Must present clear summary"
+        - "Must offer actionable next steps"

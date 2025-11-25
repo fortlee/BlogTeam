@@ -1,0 +1,412 @@
+workflow:
+  metadata:
+    id: "draft-post"
+    name: "Draft Blog Post"
+    description: "Write a blog post draft from brainstorm with integrated citations and internal links"
+    module: "writing"
+    author: "writer-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Post to Draft"
+      description: "Choose which brainstormed post to start drafting"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with brainstorm.md but no draft.md
+        3. Present numbered list
+        4. Ask: Which post would you like to draft?
+        5. Store selected post path
+      validation:
+        - "Must show posts ready for drafting"
+        - "User must select valid post"
+
+    - id: "2"
+      name: "Load Brainstorm and References"
+      description: "Read structure and sources"
+      instructions: |
+        1. Read brainstorm.md from post directory
+        2. Read references.md if it exists
+        3. Extract:
+           - Core thesis
+           - Key arguments/sections
+           - Target audience
+           - Research needed (check if completed)
+
+        Present to user:
+
+        **Ready to Draft: [Post Title]**
+
+        **Core Thesis:** [thesis]
+        **Target Audience:** [audience]
+        **Structure:** [N] main sections
+        **Available Citations:** [N] sources in references.md
+
+        [If research needed list is not empty:]
+        ⚠️ **Research Gaps:** Some items marked "TBD" - may need more sources
+
+        Proceed to drafting parameters.
+      validation:
+        - "Must load brainstorm structure"
+        - "Must identify available citations"
+
+    - id: "3"
+      name: "Set Drafting Parameters"
+      description: "Define tone, length, and style"
+      instructions: |
+        Ask user to define drafting parameters:
+
+        **1. Tone/Voice:**
+
+        A) Professional/authoritative
+        B) Conversational/friendly
+        C) Technical/detailed
+        D) Simple/accessible
+        E) Match existing blog style
+
+        **2. Target Length:**
+
+        A) Short (800-1200 words) - Quick read
+        B) Medium (1500-2000 words) - Standard blog post
+        C) Long (2500-3500 words) - In-depth guide
+        D) Very long (4000+ words) - Comprehensive/pillar content
+
+        **3. Citation Style:**
+
+        A) Inline hyperlinks - Natural flow
+        B) Numbered references - Academic style
+        C) Minimal - Only key claims
+        D) Extensive - Every fact cited
+
+        **4. Draft Approach:**
+
+        A) Section by section - We'll draft and review each section
+        B) Complete draft - I'll write the whole thing for your review
+        C) Outline first - Create detailed outline, then draft
+
+        Store parameters for drafting.
+      validation:
+        - "User must select all 4 parameters"
+
+    - id: "4"
+      name: "Draft Introduction"
+      description: "Write engaging opening that hooks readers"
+      instructions: |
+        Draft the introduction using:
+        - Hook that grabs attention (question, surprising fact, problem statement)
+        - Context for why this matters
+        - Clear thesis statement
+        - Preview of what's covered
+
+        **Introduction Hooks to Consider:**
+        - Surprising statistic [if available in references]
+        - Common misconception
+        - Compelling question
+        - Brief story or scenario
+        - Bold statement
+
+        Create introduction (150-250 words).
+
+        If user selected "Section by section" approach:
+        - Present introduction draft
+        - Ask for feedback/revisions
+        - Revise if needed
+
+        Store introduction.
+      validation:
+        - "Must include hook and thesis"
+        - "Must be appropriate length"
+
+    - id: "5"
+      name: "Draft Main Sections"
+      description: "Write body content following brainstorm structure"
+      instructions: |
+        For each main argument/section from brainstorm:
+
+        **Section [N]: [Section Title]**
+
+        Draft content that:
+        1. States the main point clearly
+        2. Provides supporting evidence/examples
+        3. Integrates citations from references.md
+        4. Addresses counterarguments if listed
+        5. Uses subheadings (H3) for subsections if needed
+        6. Maintains consistent tone
+
+        **Citation Integration:**
+        - Use inline hyperlinks: [claim]([source-url])
+        - Or format: According to [Author/Source]([url]), [claim]
+        - Reference credible sources from references.md
+
+        If "Section by section" approach:
+        - Draft one section
+        - Present to user
+        - Get feedback
+        - Revise if needed
+        - Move to next section
+
+        If "Complete draft" approach:
+        - Draft all sections in one pass
+        - Present full body for review
+
+        Store all section content.
+      validation:
+        - "Must follow brainstorm structure"
+        - "Must integrate citations"
+        - "Each section must have clear point"
+
+    - id: "6"
+      name: "Draft Conclusion"
+      description: "Write strong closing that reinforces key points"
+      instructions: |
+        Draft conclusion that:
+        - Summarizes key takeaways (2-3 bullet points)
+        - Reinforces the thesis
+        - Provides actionable next steps if appropriate
+        - Ends with compelling final thought
+
+        Keep conclusion concise (150-200 words).
+
+        If "Section by section" approach:
+        - Present conclusion
+        - Get feedback
+        - Revise if needed
+
+        Store conclusion.
+      validation:
+        - "Must summarize key points"
+        - "Must reinforce thesis"
+
+    - id: "7"
+      name: "Add Reference List"
+      description: "Include formatted citations at end"
+      instructions: |
+        If references.md exists:
+        1. Read reference list from references.md
+        2. Add "## References" section at end of draft
+        3. Copy formatted reference list
+
+        Format:
+        ```markdown
+        ## References
+
+        1. [Author]. ([Year]). [Title]. [Source]. [URL]
+        2. [Author]. ([Year]). [Title]. [Source]. [URL]
+        ```
+
+        If no references.md:
+        - Add note: "## References\n\n*Citations to be added*"
+
+        Store complete draft with references.
+      validation:
+        - "Must add references section"
+        - "Must use proper format"
+
+    - id: "8"
+      name: "Scan for Internal Linking Opportunities"
+      description: "Find related posts to link to"
+      instructions: |
+        1. Read README.md to get all existing posts
+        2. Analyze draft content for keywords and topics
+        3. Find posts that:
+           - Share related topics
+           - Would provide value to readers
+           - Are different enough (not redundant)
+
+        Identify 5-7 potential internal links:
+        - Post title
+        - Relationship to current post
+        - Suggested anchor text
+        - Suggested placement (section)
+
+        Present opportunities:
+
+        **Internal Linking Opportunities**
+
+        Target: 3-4 links for this [N]-word draft
+
+        **Recommended Links:**
+
+        1. **Link to:** [Post Title]
+           - Why: [Relationship/value]
+           - Anchor text: "[Suggested descriptive text]"
+           - Place in: [Section name]
+
+        2. **Link to:** [Post Title]
+           - Why: [Relationship/value]
+           - Anchor text: "[Suggested text]"
+           - Place in: [Section name]
+
+        [Continue for 5-7 suggestions]
+
+        Ask: Which links should I add? (comma-separated numbers: 1,3,4)
+
+        Or: A) Add all recommended B) Skip for now C) Add custom links
+
+        Store link selections.
+      validation:
+        - "Must scan existing posts"
+        - "Must suggest 5-7 opportunities"
+        - "Must provide descriptive anchor text"
+
+    - id: "9"
+      name: "Add Internal Links to Draft"
+      description: "Insert selected internal links"
+      instructions: |
+        Based on user selections:
+
+        For each selected link:
+        1. Find appropriate sentence/paragraph in the relevant section
+        2. Insert inline link with descriptive anchor text
+        3. Format: [anchor text](./relative-path-to-post/)
+
+        Example:
+        Before: "Understanding TypeScript's type system is crucial."
+        After: "Understanding [TypeScript's type system](../typescript-basics/) is crucial."
+
+        Ensure:
+        - Links are contextually relevant
+        - Anchor text is descriptive (not "click here")
+        - Links flow naturally in sentences
+        - Distribute links across sections (not clustered)
+
+        Update draft with links.
+
+        Count final internal links added.
+      validation:
+        - "Must use descriptive anchor text"
+        - "Must distribute links naturally"
+        - "Links must use relative paths"
+
+    - id: "10"
+      name: "Create Draft File"
+      description: "Save draft.md to post directory"
+      instructions: |
+        Create draft.md in post directory with:
+
+        ```markdown
+        # [Post Title]
+
+        **Status:** Draft - v1
+        **Created:** [Date]
+        **Word Count:** [Approximate count]
+        **Target Audience:** [From brainstorm]
+        **Internal Links:** [N]
+        **Citations:** [N]
+
+        ---
+
+        [Introduction]
+
+        ## [Section 1 Title]
+
+        [Section 1 content]
+
+        ## [Section 2 Title]
+
+        [Section 2 content]
+
+        [... more sections ...]
+
+        ## Conclusion
+
+        [Conclusion content]
+
+        ## References
+
+        [Reference list]
+        ```
+
+        Save draft.md to post directory.
+
+        Use Read tool to verify file was created.
+      validation:
+        - "File must be created successfully"
+        - "Must include all content sections"
+
+    - id: "11"
+      name: "Update README.md Status and History"
+      description: "Update status and record in history.md"
+      instructions: |
+        1. Read README.md
+        2. Find row for this post (match by slug path)
+        3. Update:
+           - Status: "In Progress - Writing"
+           - Last Updated: [Today's date]
+        4. Write updated README.md
+        5. Verify update
+
+        6. Read history.md from post directory
+        7. Add entry to Timeline table:
+           | [now] | **Started draft** - First draft begun, ~[word-count] words, [N] internal links | [pending] |
+        8. Write updated history.md
+
+        Use Edit tool to update precisely.
+      validation:
+        - "README must be updated"
+        - "Status must change to In Progress"
+        - "history.md must have new entry"
+
+    - id: "12"
+      name: "Commit and Push Draft"
+      description: "Save work to git"
+      instructions: |
+        Execute git commands:
+
+        1. Stage files:
+           ```bash
+           git add [post-directory-path]/draft.md
+           git add README.md
+           ```
+
+        2. Commit:
+           ```bash
+           git commit -m "Add draft for [post-title] ([word-count] words, [N] internal links)"
+           ```
+
+        3. Push:
+           ```bash
+           git push origin $(git branch --show-current)
+           ```
+
+        Confirm commit and push successful.
+      validation:
+        - "Files must be staged and committed"
+        - "Push should be attempted"
+
+    - id: "13"
+      name: "Provide Draft Summary"
+      description: "Show what was created and next steps"
+      instructions: |
+        Present summary:
+
+        **✓ Draft Complete!**
+
+        **Created:**
+        - draft.md in [post-path]
+        - Word count: ~[N] words
+        - Internal links: [N]
+        - Citations: [N]
+        - Sections: [N]
+
+        **Draft Statistics:**
+        - Introduction: [word count]
+        - Body: [word count]
+        - Conclusion: [word count]
+
+        **Link Density:** [N] links per 1000 words
+        [If optimal:] ✓ Optimal link density (3-4 per 1500 words)
+        [If low:] ⚠️ Could add more internal links
+        [If high:] ⚠️ May have too many links
+
+        **Next Steps - What would you like to do?**
+
+        A) Add more internal links
+        B) Revise specific section
+        C) Switch to Editor agent (polish and optimize)
+        D) Switch to Researcher agent (add more sources)
+        E) Return to Writer menu
+
+        Wait for user selection and respond accordingly.
+      validation:
+        - "Must provide complete summary"
+        - "Must offer logical next steps"

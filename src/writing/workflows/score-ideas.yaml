@@ -1,0 +1,149 @@
+workflow:
+  metadata:
+    id: "score-ideas"
+    name: "Score and Prioritize All Ideas"
+    description: "Batch analysis and prioritization of all ideas in ideas.md"
+    module: "writing"
+    author: "ideas-manager-agent"
+
+  steps:
+    - id: "1"
+      name: "Load All Ideas"
+      description: "Parse all ideas from ideas.md"
+      instructions: |
+        1. Read ideas.md
+        2. Skip description section (before HTML comment)
+        3. Parse all ideas
+        4. Count total ideas
+        5. Show user: "I found [N] ideas to analyze. This will take a few questions."
+      validation:
+        - "Must parse all ideas correctly"
+        - "Must show count to user"
+
+    - id: "2"
+      name: "Quick Assessment Questions"
+      description: "Gather context for scoring"
+      instructions: |
+        Ask user context questions to inform scoring:
+
+        **1. What's your primary blog focus/niche?**
+
+        [User provides answer - will use to assess idea fit]
+
+        **2. What's your expertise level in your niche?**
+
+        A) Expert - Deep knowledge and experience
+        B) Experienced - Solid practical knowledge
+        C) Learning - Growing knowledge base
+        D) Varied - Expert in some areas, learning in others
+
+        **3. What's your priority goal right now?**
+
+        A) Build authority with in-depth content
+        B) Increase traffic with trending topics
+        C) Fill content gaps in existing topics
+        D) Start new topic clusters/series
+
+        Store answers for scoring context.
+      validation:
+        - "User must answer all 3 questions"
+
+    - id: "3"
+      name: "Analyze and Score Each Idea"
+      description: "Evaluate each idea based on context"
+      instructions: |
+        For each idea, analyze:
+
+        **Scoring Criteria (per idea):**
+
+        1. **Niche Fit (0-3 points)**
+           - Perfectly aligns with stated niche: 3 pts
+           - Related to niche: 2 pts
+           - Tangentially related: 1 pt
+           - Off-topic: 0 pts
+
+        2. **Likely Expertise Match (0-2 points)**
+           - Based on user's stated expertise level
+           - Topic likely within expertise: 2 pts
+           - Topic might require research: 1 pt
+           - Topic outside expertise: 0 pts
+
+        3. **Goal Alignment (0-3 points)**
+           - Directly supports stated goal: 3 pts
+           - Partially supports goal: 2 pts
+           - Doesn't support goal: 0-1 pts
+
+        4. **Estimated Potential (0-2 points)**
+           - Based on topic breadth, depth potential
+           - High potential (evergreen, series-worthy): 2 pts
+           - Moderate potential: 1 pt
+           - Low potential (narrow scope): 0 pts
+
+        Total per idea: 10 points
+
+        Calculate score for each idea.
+        Rank ideas by score (highest first).
+      validation:
+        - "Must score every idea"
+        - "Must rank by score"
+
+    - id: "4"
+      name: "Present Scored and Prioritized List"
+      description: "Show results with recommendations"
+      instructions: |
+        Present results organized by priority:
+
+        **📊 Idea Priority Analysis**
+
+        **HIGH PRIORITY (Score 8-10) - Start These Soon:**
+
+        1. [Idea #N]: "[idea text]" - Score: [X]/10
+           - Reasoning: [why this scored high]
+
+        2. [Idea #N]: "[idea text]" - Score: [X]/10
+           - Reasoning: [why this scored high]
+
+        ---
+
+        **MEDIUM PRIORITY (Score 5-7) - Good Candidates:**
+
+        3. [Idea #N]: "[idea text]" - Score: [X]/10
+           - Reasoning: [assessment]
+
+        4. [Idea #N]: "[idea text]" - Score: [X]/10
+           - Reasoning: [assessment]
+
+        ---
+
+        **LOW PRIORITY (Score 0-4) - Reconsider or Research More:**
+
+        5. [Idea #N]: "[idea text]" - Score: [X]/10
+           - Reasoning: [why this scored low]
+
+        ---
+
+        **Summary:**
+        - Total ideas: [N]
+        - High priority: [N]
+        - Medium priority: [N]
+        - Low priority: [N]
+
+        **Strategic Recommendation:**
+        [Overall recommendation based on the collection]
+
+        **Suggested Approach:**
+        [Recommend which idea to start with and why]
+
+        **Next Steps - What would you like to do?**
+
+        A) Start brainstorming highest priority idea (#[N])
+        B) Deep-dive analyze a specific idea
+        C) Remove low-priority ideas
+        D) Find trending topics to add more high-potential ideas
+        E) Return to menu
+
+        Wait for user selection.
+      validation:
+        - "Must show all ideas grouped by priority"
+        - "Must provide strategic recommendation"
+        - "Must offer actionable next steps"

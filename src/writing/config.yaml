@@ -1,0 +1,31 @@
+module:
+  id: "writing"
+  name: "Writing Module"
+  version: "1.0.0"
+  description: "Core writing agents for blog post creation and brainstorming"
+
+settings:
+  # Default post statuses
+  statuses:
+    - "Draft - Brainstorm"
+    - "Draft - Outlining"
+    - "In Progress - Writing"
+    - "In Progress - Revision"
+    - "Ready - Final Review"
+    - "Ready - Publishing"
+    - "Published"
+
+  # Post slug settings
+  slug_format: "lowercase-hyphenated"
+  max_slug_length: 60
+
+  # Git commit settings
+  auto_commit: true
+  commit_message_format: "[action]: [post-title]"
+
+  # Directory structure (flat - no status subdirectories)
+  # Posts are stored directly in {blog_posts_dir}/{slug}/
+  # Series are stored in {blog_posts_dir}/{series-slug}/part-NN-{slug}/
+  # Status is tracked in README.md table only
+  flat_structure: true
+  part_prefix_format: "part-{NN}-{slug}"

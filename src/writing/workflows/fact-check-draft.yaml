@@ -1,0 +1,294 @@
+workflow:
+  metadata:
+    id: "fact-check-draft"
+    name: "Fact-Check Draft"
+    description: "Verify all claims in a draft are properly sourced"
+    module: "writing"
+    author: "researcher-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Draft to Fact-Check"
+      description: "Choose which draft needs verification"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to show posts with draft files (draft.md, draft-v2.md, etc.)
+        3. Present numbered list
+        4. Ask: Which draft would you like me to fact-check?
+        5. Store selected draft path
+      validation:
+        - "Must show available drafts"
+        - "User must select valid draft"
+
+    - id: "2"
+      name: "Extract All Claims from Draft"
+      description: "Identify factual assertions in the draft"
+      instructions: |
+        Read the draft file and identify:
+
+        **Types of claims to check:**
+        - Statistics and numbers
+        - Factual statements about how things work
+        - Historical facts or events
+        - Scientific or technical assertions
+        - Industry standards or trends
+        - Quotes or paraphrases from others
+        - "According to" or "research shows" statements
+
+        Extract each claim with:
+        - Claim text
+        - Location (paragraph/section)
+        - Whether it currently has a citation
+
+        Present:
+
+        **Draft Fact-Check: [Post Title]**
+
+        **Claims Found:**
+
+        **Sourced Claims:** [N]
+
+        1. "[Claim]" - ✓ Has citation: [source link/reference]
+
+        **Unsourced Claims:** [N]
+
+        1. "[Claim]" - ⚠️ NO CITATION
+        2. "[Claim]" - ⚠️ NO CITATION
+
+        **Assessment:**
+        [If all sourced:] ✅ All claims are cited
+        [If some missing:] ⚠️ [N] claims need sources
+        [If many missing:] ❌ Draft has insufficient sourcing
+
+        Proceed with fact-checking.
+      validation:
+        - "Must identify all factual claims"
+        - "Must distinguish sourced vs. unsourced"
+
+    - id: "3"
+      name: "Verify Existing Citations"
+      description: "Check if cited sources are credible and accessible"
+      instructions: |
+        For each claim that already has a citation:
+
+        1. Check if the link/URL works
+        2. Use WebSearch to verify the source exists
+        3. Assess source credibility:
+           - Is it .gov, .edu, peer-reviewed?
+           - Is it a major news outlet?
+           - Is it an industry authority?
+           - Are there signs of low quality/bias?
+
+        For each sourced claim, report:
+
+        **Claim:** "[Claim text]"
+        **Current citation:** [Link or reference]
+        **Verification:**
+        - Link status: ✓ Works / ❌ Broken
+        - Credibility: High / Medium / Low
+        - Recommendation: ✓ Good / ⚠️ Replace / ❌ Remove
+
+        Store verification results.
+      validation:
+        - "Must check all existing citations"
+        - "Must verify accessibility"
+        - "Must rate credibility"
+
+    - id: "4"
+      name: "Research Sources for Unsourced Claims"
+      description: "Find citations for claims lacking sources"
+      instructions: |
+        For each unsourced claim:
+
+        Research using WebSearch:
+        1. Search: "[claim] site:.gov"
+        2. Search: "[claim] site:.edu"
+        3. Search: "[claim] peer-reviewed"
+        4. Search: "[claim] [major news]"
+
+        Find 1-2 credible sources for each claim.
+
+        Rate each source (High/Medium/Low credibility).
+
+        Store findings.
+      validation:
+        - "Must research each unsourced claim"
+        - "Must find credible sources"
+
+    - id: "5"
+      name: "Present Fact-Check Report"
+      description: "Comprehensive report of all findings"
+      instructions: |
+        Generate detailed report:
+
+        **📋 Fact-Check Report: [Post Title]**
+
+        ---
+
+        **Executive Summary:**
+        - Total claims checked: [N]
+        - Properly cited: [N] ([%])
+        - Citations needing replacement: [N]
+        - Unsourced claims: [N]
+        - Overall grade: [A/B/C/D/F]
+
+        ---
+
+        **Existing Citations Review:**
+
+        ✓ **Good Citations** ([N])
+
+        1. Claim: "[text]"
+           Source: [link] - HIGH credibility
+           Status: ✓ Verified and credible
+
+        ⚠️ **Citations Needing Improvement** ([N])
+
+        1. Claim: "[text]"
+           Current: [link] - LOW credibility
+           Recommended replacement: [better source link]
+
+        ---
+
+        **Unsourced Claims** ([N])
+
+        ❌ **Critical** (must have sources)
+
+        1. Claim: "[statistic or key fact]"
+           Suggested source: [link]
+           Citation: [formatted citation]
+
+        ⚠️ **Important** (should have sources)
+
+        2. Claim: "[assertion]"
+           Suggested source: [link]
+
+        ---
+
+        **Recommendations:**
+
+        **High Priority Actions:**
+        1. Add sources for [N] critical unsourced claims
+        2. Replace [N] low-credibility citations
+        3. Fix [N] broken links
+
+        **Medium Priority:**
+        1. Add sources for [N] important claims
+        2. Improve citation formatting
+
+        **Overall Assessment:**
+        [Detailed assessment of draft's factual rigor]
+
+        Ask: What would you like to do?
+
+        A) Update draft with all recommended sources
+        B) Update references.md with new sources
+        C) Focus on critical issues only
+        D) Generate report file for review
+        E) Return to menu
+
+        Wait for user selection.
+      validation:
+        - "Must provide comprehensive report"
+        - "Must prioritize issues"
+        - "Must offer actionable options"
+
+    - id: "6"
+      name: "Update Draft with Citations"
+      description: "Add or improve citations in the draft"
+      instructions: |
+        Based on user selection in previous step:
+
+        **If A (update draft with all sources):**
+
+        1. Read current draft
+        2. For each unsourced claim:
+           - Add hyperlinked in-text citation
+           - Format: [claim text]([source-url])
+           - Or: [claim text] ([Author, Year](source-url))
+
+        3. For each low-credibility citation:
+           - Replace with better source
+           - Maintain same citation format
+
+        4. For broken links:
+           - Find working alternatives
+           - Update link
+
+        5. Add/update reference list at end:
+           ```
+           ## References
+
+           1. [Author]. ([Year]). [Title]. [Source]. [URL]
+           2. ...
+           ```
+
+        6. Write updated draft
+
+        7. Update history.md in post directory:
+           - Add entry: | [now] | **Fact-check complete** - [N] citations added, [N] replaced | [pending] |
+
+        8. Commit: "Add citations and fact-check updates for [post-title]"
+        9. Push to origin
+
+        **If B (update references.md):**
+        - Create/update references.md with all sources
+        - Include credibility ratings
+        - Add notes about replacements
+
+        **If C (critical only):**
+        - Only update critical unsourced claims
+        - Flag others for future attention
+
+        **If D (generate report):**
+        - Create fact-check-report.md in post directory
+        - Include full report from step 5
+        - Commit report file
+
+        Confirm completion.
+      validation:
+        - "Must handle all user selection options"
+        - "Must maintain proper citation format"
+        - "Must commit changes"
+
+    - id: "7"
+      name: "Verification Summary"
+      description: "Confirm changes and show improved status"
+      instructions: |
+        Present summary:
+
+        **✓ Fact-Check Complete**
+
+        **Changes Made:**
+        - Added citations: [N]
+        - Replaced low-quality sources: [N]
+        - Fixed broken links: [N]
+        - Updated references.md: [Yes/No]
+
+        **Improved Status:**
+        - Before: [N]% of claims sourced
+        - After: [N]% of claims sourced
+        - Grade improved: [old grade] → [new grade]
+
+        **Files Updated:**
+        - [draft filename]
+        - [references.md if applicable]
+        - [fact-check-report.md if applicable]
+
+        **Remaining Issues:**
+        [If any claims still unsourced, list them]
+
+        **Next Steps:**
+
+        A) Fact-check again (verify improvements)
+        B) Continue to Editor agent (polish draft)
+        C) Return to Researcher menu
+        D) Return to Master
+
+        What would you like to do?
+
+        Wait for user selection.
+      validation:
+        - "Must show clear before/after"
+        - "Must list all changes"
+        - "Must note remaining issues if any"

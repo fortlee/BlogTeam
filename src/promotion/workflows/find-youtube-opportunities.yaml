@@ -1,0 +1,379 @@
+workflow:
+  metadata:
+    id: "find-youtube-opportunities"
+    name: "Find YouTube Promotion Opportunities"
+    description: "Identify specific YouTube videos for strategic comment engagement"
+    module: "promotion"
+    author: "promoter-agent"
+
+  steps:
+    - id: "1"
+      name: "Select Blog Post to Promote"
+      description: "Choose which post needs YouTube promotion"
+      instructions: |
+        1. Read README.md to show all posts
+        2. Filter to posts with draft.md or final.md
+        3. Present numbered list with status
+        4. Ask: Which post would you like to promote on YouTube?
+        5. Store selected post path
+      validation:
+        - "Must show available posts"
+        - "User must select valid post"
+
+    - id: "2"
+      name: "Analyze Post Content"
+      description: "Extract topics and video-relevant angles"
+      instructions: |
+        Read post file and analyze:
+
+        **Content Analysis: [Post Title]**
+
+        **Main Topic:** [Primary subject matter]
+
+        **Key Concepts:** [List 3-5 major concepts/techniques]
+
+        **Visual/Demo Opportunities:** [What could be shown in video]
+
+        **Common Questions:** [Questions your post answers]
+
+        **Controversy/Debate Points:** [Debatable topics in your post]
+
+        **Corrections/Additions:** [Common misconceptions your post clarifies]
+
+        **Target Audience:** [Who would benefit]
+        **Technical Level:** [Beginner/Intermediate/Advanced]
+
+        **Best Video Types for This Content:**
+        - Tutorial/How-to: [Yes/No - why]
+        - Explainer/Educational: [Yes/No - why]
+        - Opinion/Commentary: [Yes/No - why]
+        - News/Current events: [Yes/No - why]
+
+        Store analysis for matching.
+      validation:
+        - "Must identify main topics"
+        - "Must understand video-relevant angles"
+
+    - id: "3"
+      name: "Find Relevant YouTube Videos"
+      description: "Use WebSearch to find specific videos"
+      instructions: |
+        Use WebSearch to find recent, popular videos:
+
+        Search queries to try:
+        - "[main topic] tutorial youtube 2025"
+        - "[main topic] explained youtube"
+        - "[key concept] [common question] youtube"
+        - "best [main topic] videos youtube"
+
+        Target video characteristics:
+        - Published within last 6 months (fresher = more active comments)
+        - 10K+ views (enough audience, not too massive where comments get lost)
+        - Active comment section (creator responds)
+        - Related but not identical to your post (complementary)
+
+        **Relevant YouTube Videos Identified:**
+
+        For each video, assess:
+
+        1. **"[Video Title]"** by [Channel Name]
+           - **URL**: [Full YouTube URL]
+           - **Published**: [Date] ([X] months ago)
+           - **Views**: [N]
+           - **Comment Activity**: [Active/Moderate/Quiet]
+           - **Creator Engagement**: [Responds to comments: Yes/No/Unknown]
+           - **Relevance**: [High/Medium/Low] - [Why]
+           - **Content Type**: [Tutorial/Explainer/Opinion/News]
+           - **Opportunity**: [What's missing that your post addresses]
+           - **Fit Score**: [1-10]
+
+        2. **"[Video Title]"**
+           [Details]
+
+        [List 8-12 videos total]
+
+        **Top 5 Videos for This Post:**
+        1. "[Title]" - [Score]/10 - [Why best fit]
+        2. "[Title]" - [Score]/10 - [Why good fit]
+        3. "[Title]" - [Score]/10 - [Why decent fit]
+        4. "[Title]" - [Score]/10 - [Additional opportunity]
+        5. "[Title]" - [Score]/10 - [Backup option]
+
+        Store top videos for next step.
+      validation:
+        - "Must use WebSearch to find actual videos"
+        - "Must include full URLs"
+        - "Must assess relevance and activity"
+        - "Must identify top 5 candidates"
+
+    - id: "4"
+      name: "Analyze Comment Sections"
+      description: "Check comment activity and opportunities"
+      instructions: |
+        For each top video, analyze comment section opportunities:
+
+        **Comment Section Analysis:**
+
+        **Video 1: "[Title]"**
+        - **URL**: [Link]
+
+        **Comment Section Assessment:**
+        - **Top comments**: [What are people discussing/asking]
+        - **Unanswered questions**: [Questions that your post answers]
+        - **Misconceptions**: [Errors that your post clarifies]
+        - **Extension opportunities**: [Ways to add value]
+        - **Creator engagement**: [Does creator respond?]
+        - **Community tone**: [Technical/Casual/Debate-heavy]
+
+        **Opportunity Type:**
+        [Answer question / Clarify misconception / Add perspective / Share resource]
+
+        **Contribution Angle:**
+        [How you'd add value without being spammy]
+
+        **Risk Level:** [Low/Medium/High]
+        - Spam detection: [Low risk if value-first, high if promotional]
+        - Community reception: [Likely positive/neutral/negative]
+
+        ---
+
+        **Video 2: "[Title]"**
+        [Repeat analysis]
+
+        ---
+
+        [Continue for top 5 videos]
+
+        Store opportunities for scoring.
+      validation:
+        - "Must analyze comment section context"
+        - "Must identify specific contribution opportunities"
+        - "Must assess risk level"
+
+    - id: "5"
+      name: "Score and Prioritize Videos"
+      description: "Rank opportunities by strategic fit"
+      instructions: |
+        Score each video on multiple factors:
+
+        **Scoring Criteria:**
+        - Relevance (0-4 points): How well post relates to video
+        - Comment opportunity (0-3 points): Clear way to add value
+        - Activity level (0-2 points): Active comments = better visibility
+        - Creator engagement (0-1 point): Responding creator boosts comment
+
+        **Total possible**: 10 points
+
+        **Ranked Video Opportunities:**
+
+        **TOP TIER (8-10 points):**
+
+        1. **[Score]/10 - "[Video Title]" by [Channel]**
+           - URL: [Link]
+           - Published: [Time ago]
+           - Views: [N]
+           - Why top tier: [Explanation]
+           - Contribution angle: [Specific value you'll add]
+           - Risk level: [Low/Medium/High]
+
+        2. [Next video]
+
+        **GOOD TIER (5-7 points):**
+
+        3. **[Score]/10 - [Details]**
+
+        **BACKUP TIER (3-4 points):**
+
+        [Lower scored opportunities]
+
+        **Recommendation:**
+        Focus on top 3 videos. Comments should be substantive (2-4 paragraphs).
+
+        **YouTube Engagement Strategy:**
+        - Lead with genuine insight or answer
+        - Add value before mentioning your content
+        - Use "I wrote a detailed post about this" not "Check out my blog"
+        - Include timestamp references if relevant to video
+        - Be specific, not generic
+
+        Store ranked list.
+      validation:
+        - "Must score all opportunities"
+        - "Must provide clear top 3 recommendations"
+        - "Must emphasize value-first approach"
+
+    - id: "6"
+      name: "Draft YouTube Comments"
+      description: "Create platform-appropriate comments"
+      instructions: |
+        For top 3 opportunities, draft YouTube comments:
+
+        **Drafted YouTube Comments:**
+
+        ---
+
+        **Opportunity 1: "[Video Title]" by [Channel]**
+        **URL**: [Link]
+
+        **Context**: [What video covers, what's missing or questioned]
+
+        **Drafted Comment:**
+        ```
+        [Draft comment following YouTube best practices:
+         - Start with genuine engagement with video content
+         - Add specific insight or answer question
+         - Use paragraph breaks (YouTube comments harder to read)
+         - Include timestamp references if relevant: @3:45
+         - Only mention blog post if it adds clear additional value
+         - Natural mention: "I explored this in detail in a post" not "Link in bio"
+         - Keep 100-300 words (substantial but readable)
+         - Conversational tone]
+        ```
+
+        **Strategy:**
+        - Video engagement: [Specific reference to video content]
+        - Value add: [What insight/answer you're providing]
+        - Blog mention: [Natural/Indirect/None - explain choice]
+        - Follow-up: [Will return to answer questions]
+
+        **Character count**: [N]
+
+        ---
+
+        **Opportunity 2: [Details]**
+        [Repeat format]
+
+        ---
+
+        **Opportunity 3: [Details]**
+        [Repeat format]
+
+        ---
+
+        **Posting Strategy:**
+
+        1. **Timing**: Post within 24-48 hours (comments most active early)
+        2. **Engagement**: Check back daily for 3-5 days
+        3. **Replies**: Respond to anyone who engages with your comment
+        4. **Creator engagement**: If creator responds, continue conversation naturally
+
+        **YouTube Best Practices Checklist:**
+        - ✓ Watch full video before commenting (or substantial portion)
+        - ✓ Reference specific points from video
+        - ✓ Add genuine value, not just promotion
+        - ✓ Use paragraph breaks for readability
+        - ✓ Monitor and respond to replies
+
+        **Tips for Better Engagement:**
+        - Early comments get more visibility
+        - Thoughtful comments get pinned by creators sometimes
+        - Technical/detailed insights stand out
+        - Answering other commenters' questions builds credibility
+
+        Ask: Would you like to:
+        A) Revise any comments
+        B) Find more videos
+        C) Save to promotion tracking
+        D) Watch videos and post comments (manual)
+        E) Return to menu
+
+        Wait for selection.
+      validation:
+        - "Must draft specific comments for top opportunities"
+        - "Must follow YouTube best practices"
+        - "Must reference video content specifically"
+
+    - id: "7"
+      name: "Save to Promotion Tracking"
+      description: "Document opportunities and planned promotions"
+      instructions: |
+        If user selected C or wants to save:
+
+        1. Check if post directory has promotion-tracking.md
+        2. If not, create with template (from promoter agent menu)
+        3. Add opportunities to "Planned Promotions" section:
+
+        ```markdown
+        ### YouTube - "[Video Title]" by [Channel]
+        - **When**: [Planned date/time - ideally within 24-48 hours]
+        - **URL**: [YouTube video URL]
+        - **Score**: [X]/10
+        - **Strategy**: Value-first comment, [specific angle]
+        - **Drafted comment**: [Link to this workflow output or paste]
+        - **Status**: Planned
+        - **Notes**: [Any special considerations, timestamp references, etc.]
+        ```
+
+        4. Commit changes:
+        ```bash
+        git add [post-directory]/promotion-tracking.md
+        git commit -m "Add YouTube promotion opportunities for [post-title]"
+        git push origin $(git branch --show-current)
+        ```
+
+        5. Confirm saved.
+      validation:
+        - "Must save to promotion-tracking.md"
+        - "Must commit to git"
+
+    - id: "8"
+      name: "Provide Action Summary"
+      description: "Clear next steps for user"
+      instructions: |
+        Present final summary:
+
+        **✓ YouTube Opportunities Identified**
+
+        **Post**: [Post Title]
+
+        **Top Opportunities Found**: [N]
+
+        **Priority Actions:**
+
+        1. **"[Video Title]"** by [Channel]
+           - Action: [Post drafted comment]
+           - URL: [Link]
+           - When: [Within 24-48 hours for best visibility]
+           - Key angle: [Value you're adding]
+
+        2. **"[Video Title]"** by [Channel]
+           - Action: [Post drafted comment]
+           - URL: [Link]
+           - When: [Timing]
+           - Key angle: [Value you're adding]
+
+        3. **"[Video Title]"** by [Channel]
+           - Action: [Post drafted comment]
+           - URL: [Link]
+           - When: [Timing]
+           - Key angle: [Value you're adding]
+
+        **Remember:**
+        - ✓ Watch video before commenting (or substantial portion)
+        - ✓ Reference specific video content
+        - ✓ Lead with value, not promotion
+        - ✓ Return to answer replies within 3-5 days
+        - ✓ Track results in promotion-tracking.md
+
+        **Engagement Tips:**
+        - Early comments (first 48 hours) get more visibility
+        - Thoughtful, detailed comments may get pinned by creator
+        - Responding to other comments builds credibility
+        - If creator responds, continue conversation naturally
+
+        **Saved to**: [Path to promotion-tracking.md]
+
+        **Next Steps - What would you like to do?**
+
+        A) Find Reddit opportunities for this post
+        B) Create comprehensive promotion plan (all platforms)
+        C) Find more YouTube videos
+        D) Draft promotion text for another platform
+        E) Return to Promoter menu
+        F) Return to Master
+
+        Wait for user selection.
+      validation:
+        - "Must provide clear action summary"
+        - "Must include specific URLs and timing"
+        - "Must remind about best practices"
