@@ -520,7 +520,7 @@ blog-team install
 
 ### 🚀 Published on NPM
 
-- [x] Published as `blog-team@1.2.1`
+- [x] Published as `blog-team@1.2.2`
 - [x] Available via `npx blog-team install`
 - [x] MIT License
 - [x] Complete documentation
